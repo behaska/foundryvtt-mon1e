@@ -1,72 +1,73 @@
-# Plan d'implémentation — Milestone 1 : Mon1e Bootstrap (0.0.1)
-**Issue** : https://github.com/behaska/foundryvtt-mon1e/issues/1
-**ADR** : aucun (pas de répertoire ADR configuré)
-**Modules probablement impactés** : `system.json` (nouveau), `src/main.mjs` (nouveau), `package.json`, `tsconfig.json` (nouveau), `tests/` (nouveau), `docs/README.md` et `docs/DEVELOPMENT.md` (nouveaux), `.gitignore`, `index.js` (à retirer)
+# Implementation plan — Milestone 1: Mon1e Bootstrap (0.0.1)
+**Issue**: https://github.com/behaska/foundryvtt-mon1e/issues/1
+**ADR**: none (no ADR directory configured)
+**Likely impacted modules**: `system.json` (new), `src/main.mjs` (new), `package.json`, `tsconfig.json` (new), `tests/` (new), `docs/README.md` and `docs/DEVELOPMENT.md` (new), `.gitignore`, `index.js` (to remove)
 
-Source de cadrage : `documentation/cadrage/bootstrap/bootstraping-initial-project.md`, phases **P0, P1, P2 uniquement**.
+Framing source: `documentation/cadrage/bootstrap/bootstraping-initial-project.md` (in French), phases **P0, P1, P2 only**.
 
-## 1. Objectif
-Livrer le jalon 0.0.1 : Foundry v14.370 reconnaît le système `mon1e`, un monde de test se crée et démarre sans erreur bloquante, Git est opérationnel et des commandes de vérification simples (`typecheck`, `test`, `check`) existent. Aucun moteur de règles.
+## 1. Objective
+Deliver milestone 0.0.1: Foundry v14.370 recognizes the `mon1e` system, a test world can be created and started without blocking errors, Git is operational and simple verification commands (`typecheck`, `test`, `check`) exist. No rules engine.
 
-## 2. Périmètre
-### Inclus
-- **P0** : environnement local vérifié (Foundry 14.370, Node.js, Git, VS Code, dossier User Data identifié).
-- **P1** : manifeste `system.json`, point d'entrée `src/main.mjs`, `docs/README.md`, emplacement du dépôt visible par Foundry, monde de test démarré.
-- **P2** : JSDoc + `checkJs` via `tsconfig.json`, scripts npm `typecheck` / `test` / `check`, un premier test `node:test`, `docs/DEVELOPMENT.md`.
+## 2. Scope
+### Included
+- **P0**: local environment verified (Foundry 14.370, Node.js, Git, VS Code, User Data folder identified).
+- **P1**: `system.json` manifest, `src/main.mjs` entry point, `docs/README.md`, repository location visible to Foundry, test world started.
+- **P2**: JSDoc + `checkJs` via `tsconfig.json`, npm scripts `typecheck` / `test` / `check`, a first `node:test` test, `docs/DEVELOPMENT.md`.
 
-### Hors périmètre
-- P3 à P6 : modèles de données, `TypeDataModel`, fiches `ActorSheetV2`, mécaniques, packaging/distribution.
-- Types Actor/Item, `RULES.md`, `DECISIONS.md`, `templates/`, `styles/`, `lang/`, dossiers `models|rules|sheets|foundry` vides.
-- CI/CD, GitHub Actions, bibliothèque de types Foundry communautaire, bundler ou framework.
+### Out of scope
+- P3 to P6: data models, `TypeDataModel`, `ActorSheetV2` sheets, mechanics, packaging/distribution.
+- Actor/Item types, `RULES.md`, `DECISIONS.md`, `templates/`, `styles/`, `lang/`, empty `models|rules|sheets|foundry` folders.
+- CI/CD, GitHub Actions, community Foundry type library, bundler or framework.
 
-## 3. État existant
-- Dépôt Git déjà initialisé (un commit initial) : l'étape `git init` du brief est faite.
-- `package.json` minimal (`version` 1.0.0, script `test` factice qui échoue, aucune dépendance), `index.js` factice (`console.log`).
-- Ni `system.json`, ni `src/`, ni `tests/`, ni `tsconfig.json`.
-- Le dépôt est dans `~/Workspace/Perso/FoundryVTT/foundryvtt-mon1e`, pas dans `<User Data>/Data/systems/`.
-- `.claude/skills` contient des skills de workflow, sans rapport avec le code produit.
+## 3. Existing state
+- Git repository already initialized (one initial commit): the brief's `git init` step is done.
+- Minimal `package.json` (`version` 1.0.0, placeholder `test` script that fails, no dependencies), placeholder `index.js` (`console.log`).
+- No `system.json`, `src/`, `tests/` or `tsconfig.json`.
+- The repository lives in `~/Workspace/Perso/FoundryVTT/foundryvtt-mon1e`, not in `<User Data>/Data/systems/`.
+- `.claude/skills` holds workflow skills, unrelated to the shipped code.
 
-## 4. Décisions d'architecture
-- Game System natif, ES Modules `.mjs`, JSDoc + `checkJs`, aucun build ni bundler (brief §1).
-- Identifiant `mon1e`, type `system`, compatibilité minimum et vérifiée = 14, version 0.0.1, `esmodules` = `src/main.mjs` (brief §4).
-- `typescript` en devDependency uniquement pour `checkJs` ; aucun fichier `.ts`, aucune sortie générée.
-- Le test initial porte sur une fonction pure sans dépendance Foundry (le périmètre `checkJs` commence par la logique pure, brief §5).
-- **Décidé** : le dépôt et son répertoire restent nommés `foundryvtt-mon1e`. Foundry exige un dossier du système nommé comme l'id (`mon1e`) : le lien `<User Data>/Data/systems/mon1e` → dépôt est créé **manuellement par le mainteneur** (les chemins locaux ne sont pas fiables pour un agent). Le plan ne crée ni ne déplace rien à ce sujet.
+## 4. Architecture decisions
+- Native Game System, ES Modules `.mjs`, JSDoc + `checkJs`, no build step or bundler (brief §1).
+- Identifier `mon1e`, type `system`, minimum and verified compatibility = 14, version 0.0.1, `esmodules` = `src/main.mjs` (brief §4).
+- `typescript` as a devDependency only for `checkJs`; no `.ts` files, no generated output.
+- The first test targets a pure function with no Foundry dependency (`checkJs` coverage starts with pure logic, brief §5).
+- **Decided**: the repository and its directory keep the name `foundryvtt-mon1e`. Foundry requires the system folder to be named after the id (`mon1e`): the link `<User Data>/Data/systems/mon1e` → repository is created **manually by the maintainer** (local paths are not reliable for an agent). The plan neither creates nor moves anything for this.
+- **Decided**: project language is English (code, comments, logs, tests, docs, plans, commits). The French framing brief is unchanged.
 
-## 5. Plan de travail
-1. **P0 — Vérifier l'environnement** : confirmer Foundry 14.370, versions de Node.js et Git, VS Code ; noter le chemin User Data. Étape manuelle, résultat consigné dans `docs/DEVELOPMENT.md`.
-2. **P1 — Manifeste** : créer `system.json` avec les champs du brief (`id`, `type`, `title`, `description`, `version`, `compatibility`, `esmodules`).
-3. **P1 — Point d'entrée** : créer `src/main.mjs` qui journalise un message de diagnostic dans le hook `init`, rien d'autre.
-4. **P1 — Rendre le système visible** : étape **manuelle (mainteneur)** : lien `<User Data>/Data/systems/mon1e` → dépôt. L'implémentation s'arrête là et attend la confirmation que le lien existe avant l'étape 6.
-5. **P1 — Nettoyage et docs** : supprimer `index.js` factice, aligner `package.json` (version 0.0.1, `main` ou retrait), créer `docs/README.md`, vérifier `.gitignore`.
-6. **P1 — Vérification dans Foundry** : Mon1e apparaît dans la liste des systèmes, création et démarrage d'un monde de test, message de diagnostic visible, console sans erreur bloquante.
-7. **P2 — Typage** : ajouter `typescript` en devDependency, créer `tsconfig.json` (`allowJs`, `checkJs`, `noEmit`) limité d'abord à `src/` pur et `tests/`.
-8. **P2 — Tests** : ajouter un test `node:test` minimal et une fonction pure associée, dans `tests/`.
-9. **P2 — Scripts** : définir `typecheck`, `test` (`node --test`) et `check` (enchaîne les deux) ; supprimer le script `test` factice.
-10. **P2 — Documentation** : rédiger `docs/DEVELOPMENT.md` (commandes, conventions, couverture réelle de `checkJs`, et rappel que le lien vers `systems/mon1e` est créé à la main) ; première action de commit après validation.
-11. **Clôture** : cocher les critères du jalon dans l'issue #1 (hors de ce plan), vérifier l'état Git.
+## 5. Work plan
+1. **P0 — Verify the environment**: confirm Foundry 14.370, Node.js and Git versions, VS Code; note the User Data path. Manual step, result recorded in `docs/DEVELOPMENT.md`.
+2. **P1 — Manifest**: create `system.json` with the brief's fields (`id`, `type`, `title`, `description`, `version`, `compatibility`, `esmodules`).
+3. **P1 — Entry point**: create `src/main.mjs` that logs a diagnostic message in the `init` hook, nothing else.
+4. **P1 — Make the system visible**: **manual step (maintainer)**: link `<User Data>/Data/systems/mon1e` → repository. Implementation stops there and waits for confirmation that the link exists before step 6.
+5. **P1 — Cleanup and docs**: remove placeholder `index.js`, align `package.json` (version 0.0.1, drop `main`), create `docs/README.md`, check `.gitignore`.
+6. **P1 — Verify in Foundry**: Mon1e appears in the systems list, a test world is created and started, diagnostic message visible, no blocking console error.
+7. **P2 — Typing**: add `typescript` as a devDependency, create `tsconfig.json` (`allowJs`, `checkJs`, `noEmit`) initially limited to pure `src/` code and `tests/`.
+8. **P2 — Tests**: add a minimal `node:test` test and an associated pure function in `tests/`.
+9. **P2 — Scripts**: define `typecheck`, `test` (`node --test`) and `check` (chains both); remove the placeholder `test` script.
+10. **P2 — Documentation**: write `docs/DEVELOPMENT.md` (commands, conventions, real `checkJs` coverage, reminder that the `systems/mon1e` link is created by hand).
+11. **Wrap-up**: tick the milestone criteria in issue #1 (outside this plan), check Git state.
 
-## 6. Fichiers probablement modifiés
-- Créés : `system.json`, `src/main.mjs`, `tsconfig.json`, `tests/*.test.mjs`, `docs/README.md`, `docs/DEVELOPMENT.md`, éventuellement un module pur sous `src/`.
-- Modifiés : `package.json`, `package-lock.json` (généré), `.gitignore` (`node_modules/`).
-- Supprimé : `index.js`.
-- À ne pas éditer à la main : `.claude/`, `.agents/`, `CLAUDE.md`, `AGENTS.md` (générés par `llm sync`). Décidé : ils sont **versionnés** dans le dépôt ; ne pas les ajouter à `.gitignore`.
+## 6. Likely modified files
+- Created: `system.json`, `src/main.mjs`, `tsconfig.json`, `tests/*.test.mjs`, `docs/README.md`, `docs/DEVELOPMENT.md`, possibly a pure module under `src/`.
+- Modified: `package.json`, `package-lock.json` (generated), `.gitignore` (`node_modules/`).
+- Removed: `index.js`.
+- Do not edit by hand: `.claude/`, `.agents/`, `CLAUDE.md`, `AGENTS.md` (generated by `llm sync`). Decided: they are **versioned** in the repository; do not add them to `.gitignore`.
 
-## 7. Tests attendus
-- `npm test` : le test `node:test` passe.
-- `npm run typecheck` : zéro erreur sur le périmètre configuré.
-- `npm run check` : enchaîne les deux et retourne 0.
-- Validation manuelle dans Foundry : système listé, monde créé et lancé, message `init` présent, aucune erreur bloquante en console. Le résultat est consigné (réussi / échoué / non exécuté).
+## 7. Expected tests
+- `npm test`: the `node:test` test passes.
+- `npm run typecheck`: zero errors on the configured scope.
+- `npm run check`: chains both and returns 0.
+- Manual validation in Foundry: system listed, world created and started, `init` message present, no blocking console error. Result recorded (passed / failed / not run).
 
-## 8. Risques et mitigations
-- Nom de dossier ≠ `id` : Foundry ne détecte pas le système → lien nommé `mon1e` créé par le mainteneur ; ne pas le supposer présent, demander confirmation.
-- `checkJs` donne un faux sentiment de sécurité sur les API Foundry → indiquer clairement le périmètre couvert dans `DEVELOPMENT.md`.
-- Dérive de périmètre vers P3+ (modèles, fiches) → hors périmètre explicite, aucun dossier vide.
-- Fichiers générés (`CLAUDE.md`, `AGENTS.md`, `.claude/`, `.agents/`) versionnés (décision du mainteneur, contraire au guide du workbench) → risque de diff parasites : relancer `llm sync` et committer les fichiers générés séparément du code du jalon.
-- Version Foundry : valider la compatibilité réellement testée sur 14.370, pas seulement déclarée.
+## 8. Risks and mitigations
+- Folder name ≠ `id`: Foundry does not detect the system → link named `mon1e` created by the maintainer; do not assume it exists, ask for confirmation.
+- `checkJs` gives a false sense of safety on Foundry APIs → state the covered scope clearly in `DEVELOPMENT.md`.
+- Scope drift toward P3+ (models, sheets) → explicit out of scope, no empty folders.
+- Generated files (`CLAUDE.md`, `AGENTS.md`, `.claude/`, `.agents/`) versioned (maintainer decision, contrary to the workbench guide) → risk of noisy diffs: rerun `llm sync` and commit generated files separately from milestone code.
+- Foundry version: validate the compatibility actually tested on 14.370, not only declared.
 
-## 9. Critères d'arrêt
-- Foundry 14.370 non disponible ou non lançable : arrêter après P0 et signaler.
-- Le système n'apparaît pas dans Foundry après correction du chemin et de l'id : arrêter avant P2 et diagnostiquer.
-- Toute demande de modèle de données, de fiche ou de règle Mon : hors périmètre, arrêter et remonter.
-- Lien `systems/mon1e` non confirmé par le mainteneur : ne pas exécuter l'étape 6 (vérification dans Foundry) et ne rien créer dans `<User Data>`.
+## 9. Stop criteria
+- Foundry 14.370 unavailable or not launchable: stop after P0 and report.
+- The system does not appear in Foundry after fixing path and id: stop before P2 and diagnose.
+- Any request for a data model, sheet or Mon rule: out of scope, stop and escalate.
+- `systems/mon1e` link not confirmed by the maintainer: do not run step 6 (Foundry verification) and create nothing in `<User Data>`.
