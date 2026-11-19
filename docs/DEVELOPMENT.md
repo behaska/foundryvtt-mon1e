@@ -23,6 +23,12 @@ ln -s /path/to/foundryvtt-mon1e mon1e
 
 Single test file: `node --test tests/<file>.test.mjs`.
 
+## Daily loop
+1. Edit under `src/` (changes are picked up through the symlink, no copy or build).
+2. `npm run check`.
+3. Reload the test world `mon1e-test` in Foundry and read the browser console (F12) for errors and the `mon1e |` log lines.
+4. Commit once behavior is verified in Foundry.
+
 ## `checkJs` coverage
 Current scope (`tsconfig.json`): `src/constants.mjs` and `tests/`. `src/main.mjs` is **excluded**: it uses the Foundry global API (`Hooks`), and no type declarations are installed for it. Foundry APIs are verified inside Foundry itself.
 
