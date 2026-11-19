@@ -1,0 +1,9 @@
+name: implement-from-plan
+version: 1.0.0
+layer: skill
+requires:
+  context: [project-conventions, validation]
+optional:
+  context: [platform, testing, localization, persistence]
+inputs: [plan-path]
+outputs: [code-changes, test-changes, validation-summary]

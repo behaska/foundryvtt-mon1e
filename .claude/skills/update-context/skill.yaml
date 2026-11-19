@@ -1,0 +1,9 @@
+name: update-context
+version: 1.0.0
+layer: skill
+requires:
+  context: [workbench-path]
+optional:
+  context: [project-guidance, shared-contexts]
+inputs: [context-change-description]
+outputs: [updated-claude-md, updated-agents-md]
