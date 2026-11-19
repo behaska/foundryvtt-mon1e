@@ -1,0 +1,14 @@
+{
+  "id": "mon1e",
+  "type": "system",
+  "title": "Mon1e for Foundry VTT",
+  "description": "Game System for Mon, an RPG from Fringe Worlds.",
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": 14,
+    "verified": 14
+  },
+  "esmodules": [
+    "src/main.mjs"
+  ]
+}
