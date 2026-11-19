@@ -26,6 +26,14 @@ Single test file: `node --test tests/<file>.test.mjs`.
 ## `checkJs` coverage
 Current scope (`tsconfig.json`): `src/constants.mjs` and `tests/`. `src/main.mjs` is **excluded**: it uses the Foundry global API (`Hooks`), and no type declarations are installed for it. Foundry APIs are verified inside Foundry itself.
 
+Not covered by `checkJs` (needs an in-Foundry check): `src/main.mjs` and every Foundry global or API (`Hooks`, `game`, `CONFIG`, documents, data models, sheets). `node:test` tests only exercise pure code and the manifest file; they do not cover Foundry integration. A green `npm run check` says nothing about runtime behavior in Foundry.
+
+### Verification record: quality commands (issue #4)
+Date: 2026-11-19. Clean `npm ci`, Node.js v26.11.1, TypeScript 7.0.2.
+- `npm run typecheck`: **passed** (exit 0, nothing emitted); exits 1 on an injected type error.
+- `npm test`: **passed** (3 tests, exit 0, `tests/` discovered); exits 1 on a failing assertion.
+- `npm run check`: **passed** (exit 0); exits 1 when typecheck fails, tests are not run.
+
 ## Conventions
 - Project language is English (code, comments, logs, tests, docs, plans, commits).
 - JavaScript ES Modules (`.mjs`), JSDoc, no build step or bundler.
