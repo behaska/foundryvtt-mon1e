@@ -1,0 +1,9 @@
+name: plan-from-issue
+version: 1.0.0
+layer: skill
+requires:
+  context: [planning]
+optional:
+  context: [architecture, domain-mapping, artifact-language]
+inputs: [issue-or-brief]
+outputs: [plan-file]

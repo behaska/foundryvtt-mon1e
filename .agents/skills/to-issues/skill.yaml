@@ -1,0 +1,9 @@
+name: to-issues
+version: 1.0.0
+layer: skill
+requires:
+  context: [issue-tracker]
+optional:
+  context: [issue-language, issue-template, triage-policy]
+inputs: [plan-spec-or-prd]
+outputs: [issue-breakdown, tracker-issues]
