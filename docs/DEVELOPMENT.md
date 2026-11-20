@@ -163,3 +163,15 @@ Steps:
 3. (+)/(-) on each scar gauge (past the drawn boxes adds one, stops at 0); type in each disorder line; press (+) to add a fourth line and fill it; close and reopen the sheet; intact.
 4. Reload (F5), then close and reopen the world; intact.
 5. Labels localized, no raw `MON1E.*` keys, console clean, Health, Composure and diagram unaffected.
+
+## Verification record: talents (issue #19)
+Automated, 2026-11-20: `npm run check` **passed** (36 tests). Covers `blankTalent`, `defaultTalentRows`, `removeRow` and the i18n labels. Does not cover the model, sheet, template or the add/remove buttons.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): talent rows shown and localized, add and remove work, values persist after reload, console clean. Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): the Talents section shows 14 blank rows (schema `initial`; no migration).
+2. Create a new actor: same.
+3. Type a label and a value in several rows; press (+) to add a row and fill it; remove a middle row (rows below shift up, each value stays with its label); close and reopen the sheet; intact.
+4. Reload (F5), then close and reopen the world; intact.
+5. Labels localized, no raw `MON1E.*` keys, console clean, other sections unaffected.

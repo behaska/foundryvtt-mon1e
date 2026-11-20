@@ -164,4 +164,20 @@
       title="{{localize "MON1E.Disorders.add"}}" aria-label="{{localize "MON1E.Disorders.add"}}">+</button>
   </fieldset>
   {{/each}}
+
+  <fieldset class="talents">
+    <legend>{{localize "MON1E.Character.talents"}}</legend>
+    {{#each talents}}
+    <div class="talent-row">
+      <input type="text" name="system.talents.{{index}}.label" value="{{label}}"
+        aria-label="{{localize "MON1E.Talents.label"}} {{number}}">
+      <input type="number" step="1" name="system.talents.{{index}}.value" value="{{value}}"
+        aria-label="{{localize "MON1E.Talents.value"}} {{number}}">
+      <button type="button" data-action="removeTalent" data-index="{{index}}"
+        title="{{localize "MON1E.Talents.remove"}}" aria-label="{{localize "MON1E.Talents.remove"}} {{number}}">&minus;</button>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addTalent"
+      title="{{localize "MON1E.Talents.add"}}" aria-label="{{localize "MON1E.Talents.add"}}">+</button>
+  </fieldset>
 </section>

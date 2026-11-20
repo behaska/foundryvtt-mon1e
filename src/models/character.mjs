@@ -2,6 +2,7 @@ import { APTITUDE_KEYS, ATTRIBUTE_KEYS, BRAWL_KEYS, ENCOUNTER_KEYS, SKILL_KEYS, 
 import { defaultClassLevelRows } from "../rules/identity.mjs";
 import { DIAGRAM_FLAG_KEYS, DIAGRAM_NUMBER_KEYS } from "../rules/diagram.mjs";
 import { DISORDER_KEYS, SCAR_KEYS, defaultDisorderLines } from "../rules/scars.mjs";
+import { defaultTalentRows } from "../rules/talents.mjs";
 import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS } from "../rules/tracks.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
@@ -37,7 +38,7 @@ const trackField = (stateKeys) =>
   });
 
 /**
- * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes, skills, brawls, encounters, health, composure, centre diagram, scars and disorders, raw values.
+ * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes, skills, brawls, encounters, health, composure, centre diagram, scars, disorders and talents, raw values.
  * The character name is the Actor `name`, not stored here.
  */
 export class CharacterData extends foundry.abstract.TypeDataModel {
@@ -76,6 +77,13 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       ...Object.fromEntries(SCAR_KEYS.map((key) => [key, trackField([])])),
       ...Object.fromEntries(
         DISORDER_KEYS.map((key) => [key, new ArrayField(textField(), { initial: () => defaultDisorderLines() })])
+      ),
+      talents: new ArrayField(
+        new SchemaField({
+          label: textField(),
+          value: integerField()
+        }),
+        { initial: () => defaultTalentRows() }
       )
     };
   }

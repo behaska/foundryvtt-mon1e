@@ -123,6 +123,9 @@ Whole numbers (default 0): Willpower, Burden, Charge, Discord, Group Focus. Free
 #### Stored for scars and disorders (issue #18, not a rule)
 Road, Drive and Group Scars: each a count of checked boxes (whole number, default 0), same placeholder display as Health and Composure. Road, Drive and Group Disorders: each a list of free-text lines, 3 blank lines by default, more can be added. Raw values only: no bound, no effect, no link between Scars and Disorders. Still **unconfirmed by the Mon creator**, including the scar box count (the issue mentions 3 per the PDF) and whether three disorder lines is a limit.
 
+#### Stored for talents (issue #19, not a rule)
+A list of rows, each a free-text label (default blank) and a whole number (default 0). 14 blank rows by default (printed layout, not a limit), more can be added with (+), any row can be removed. Embedded list rather than Items. Raw values only: no bound, no effect, no roll link. Still **unconfirmed by the Mon creator**, including list vs Items.
+
 ### B. Deferred: answer when the matching mechanic is implemented
 - Value ranges (minimum, maximum, negatives allowed or not) and clamping for every numeric line. #10 allows raw values with no bounds.
 - Derived values: whether any of Might, Willpower, Burden, Charge, Discord, Group Focus, Health or Composure is computed.

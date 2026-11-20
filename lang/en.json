@@ -38,7 +38,14 @@
       "discord": "Discord",
       "groupFocus": "Group Focus",
       "focusStatement": "Focus Statement",
-      "groupArchetype": "Group Archetype"
+      "groupArchetype": "Group Archetype",
+      "talents": "Talents"
+    },
+    "Talents": {
+      "label": "Talent",
+      "value": "Talent value",
+      "add": "Add a talent",
+      "remove": "Remove talent"
     },
     "Flags": {
       "wayward": "Wayward",

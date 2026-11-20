@@ -46,3 +46,8 @@
 .mon1e.character-sheet .diagram-flags .state { display: flex; align-items: center; gap: 0.25rem; }
 .mon1e.character-sheet .disorders { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem; }
 .mon1e.character-sheet .disorders button { align-self: flex-start; width: 2rem; }
+
+/* Talents */
+.mon1e.character-sheet .talents { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem; }
+.mon1e.character-sheet .talent-row { display: grid; grid-template-columns: 1fr 5rem 2rem; gap: 0.25rem; align-items: center; }
+.mon1e.character-sheet .talents > button { align-self: flex-start; width: 2rem; }

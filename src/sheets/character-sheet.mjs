@@ -1,6 +1,7 @@
 import { TEMPLATE_ROOT } from "../constants.mjs";
 import { DIAGRAM_FLAG_KEYS, DIAGRAM_NUMBER_KEYS } from "../rules/diagram.mjs";
 import { DISORDER_KEYS, SCAR_KEYS } from "../rules/scars.mjs";
+import { blankTalent, removeRow } from "../rules/talents.mjs";
 import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS, adjustFilled, boxesToDraw } from "../rules/tracks.mjs";
 
 const TRACKS = ["health", "composure", ...SCAR_KEYS];
@@ -17,8 +18,35 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     position: { width: 720, height: 640 },
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
-    actions: { adjustTrack: CharacterSheet.#onAdjustTrack, addDisorder: CharacterSheet.#onAddDisorder }
+    actions: {
+      adjustTrack: CharacterSheet.#onAdjustTrack,
+      addDisorder: CharacterSheet.#onAddDisorder,
+      addTalent: CharacterSheet.#onAddTalent,
+      removeTalent: CharacterSheet.#onRemoveTalent
+    }
   };
+
+  /**
+   * (+) on the Talents list: appends one blank row.
+   * @this {CharacterSheet}
+   */
+  static async #onAddTalent() {
+    const rows = this.document.toObject().system.talents;
+    await this.document.update({ "system.talents": [...rows, blankTalent()] });
+  }
+
+  /**
+   * Remove button on a Talent row. Reads `data-index`.
+   * @this {CharacterSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   */
+  static async #onRemoveTalent(event, target) {
+    const index = Number(target.dataset.index);
+    const rows = this.document.toObject().system.talents;
+    if (!Number.isInteger(index) || index < 0 || index >= rows.length) return;
+    await this.document.update({ "system.talents": removeRow(rows, index) });
+  }
 
   /**
    * (+)/(-) on a gauge. Reads `data-track` ("health" or "composure") and `data-delta` (+1 or -1).
@@ -109,6 +137,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       key,
       label: game.i18n.localize(`MON1E.Disorders.${key}`),
       lines: this.document.system[key].map((value, index) => ({ index, number: index + 1, value }))
+    }));
+    context.talents = this.document.system.talents.map((row, index) => ({
+      index,
+      number: index + 1,
+      label: row.label,
+      value: row.value
     }));
     return context;
   }
