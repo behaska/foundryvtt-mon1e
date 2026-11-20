@@ -7,7 +7,9 @@
     "test": "node --test tests/",
     "check:manifest": "node scripts/check-manifest.mjs",
     "check": "npm run typecheck && npm test && npm run check:manifest && npm run lint",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "package": "node scripts/package.mjs",
+    "verify:package": "node scripts/verify-package.mjs"
   },
   "private": true,
   "devDependencies": {
