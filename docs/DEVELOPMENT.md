@@ -175,3 +175,17 @@ Steps:
 3. Type a label and a value in several rows; press (+) to add a row and fill it; remove a middle row (rows below shift up, each value stays with its label); close and reopen the sheet; intact.
 4. Reload (F5), then close and reopen the world; intact.
 5. Labels localized, no raw `MON1E.*` keys, console clean, other sections unaffected.
+
+## Verification record: sheet look (issue #20)
+Automated, 2026-11-20: `npm run check` **passed** (36 tests, unchanged). Covers nothing in CSS or templates; there is no automated check of the visual result.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): sheet layout shown, console clean, data displayed and persisted after reload. Foundry build not recorded.
+
+Steps:
+1. Open an actor: the sheet opens at 900x780, header and tabs stay pinned, the page scrolls, console clean.
+2. Compare with `Character Sheet ALPHA Page 1.pdf` page 1: identity / archetype / class band, cross diagram with hexagons (Willpower, Burden, Charge, Discord, Group Focus) and flags, Road/Drive/Group scars and disorders at the sides, attributes, aptitudes, brawls, encounters, health, composure, skills in 3 columns, talents in 2.
+3. Regression: edit a value in every section, use each track (+)/(-), add a disorder line, add and remove a talent; close and reopen, then reload (F5); intact.
+4. Tab through the hexagon inputs: focus is visible. Labels localized, no raw `MON1E.*` keys.
+5. Narrow the window: nothing overlaps or becomes unreachable. Check light and dark themes.
+
+Known gaps against the paper: Burden and Charge edge box tracks are not drawn (not stored); the MON logo is not used (rights unconfirmed); the layout is an approximation by eye, not pixel-exact.

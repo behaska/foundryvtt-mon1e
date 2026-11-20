@@ -1,21 +1,13 @@
-.mon1e.character-sheet .sheet-header { padding: 0.5rem; }
-.mon1e.character-sheet .identity-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  padding: 0.5rem;
+/* Presentation only. Colours follow the Foundry theme with fallbacks; no bundled fonts or images. */
+.mon1e.character-sheet {
+  --mon1e-line: var(--color-text-primary, #222);
+  --mon1e-muted: var(--color-text-secondary, #666);
+  --mon1e-fill: var(--color-cool-5, #fff);
+  --mon1e-focus: var(--color-border-highlight, #b00);
+  --mon1e-font: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --mon1e-hex: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  font-family: var(--mon1e-font);
 }
-.mon1e.character-sheet .field { display: flex; flex-direction: column; gap: 0.15rem; }
-.mon1e.character-sheet .field.wide { grid-column: 1 / -1; }
-.mon1e.character-sheet .class-levels { width: 100%; padding: 0.5rem; }
-.mon1e.character-sheet .stat-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-  margin: 0.5rem;
-}
-.mon1e.character-sheet .stat-list.skills { grid-template-columns: repeat(3, 1fr); }
-.mon1e.character-sheet .stat-list.pair { grid-template-columns: repeat(2, 1fr); }
 
 /* Layout: header and tabs stay pinned, the active page scrolls.
    `scrollable` in PARTS only preserves scroll position; it does not create a scroll container. */
@@ -30,24 +22,169 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+}
+.mon1e.character-sheet .sheet-header { padding: 0.5rem 0.75rem 0; }
+
+/* Fields: label then underlined input, as on the paper sheet */
+.mon1e.character-sheet .field { display: flex; flex-direction: column; gap: 0.15rem; }
+.mon1e.character-sheet input[type="text"],
+.mon1e.character-sheet input[type="number"],
+.mon1e.character-sheet textarea {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--mon1e-line);
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  font-family: inherit;
+}
+.mon1e.character-sheet input[type="number"] { text-align: center; }
+.mon1e.character-sheet textarea { border: 1px solid var(--mon1e-line); resize: vertical; }
+
+/* Section headings: centred title over a rule */
+.mon1e.character-sheet fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.mon1e.character-sheet legend {
+  display: block;
+  width: 100%;
+  padding: 0 0 0.15rem;
+  margin-bottom: 0.35rem;
+  text-align: center;
+  font-size: 1.15rem;
+  border-bottom: 1px solid var(--mon1e-line);
 }
 
-/* Health and Composure gauges */
-.mon1e.character-sheet .track { margin: 0.5rem; }
-.mon1e.character-sheet .track-boxes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
-.mon1e.character-sheet .track-boxes button { flex: 0 0 auto; width: 2rem; }
-.mon1e.character-sheet .track-states { display: flex; gap: 1rem; margin-top: 0.5rem; }
-.mon1e.character-sheet .track-states .state { display: flex; align-items: center; gap: 0.25rem; }
+/* Top band: identity | archetype | class table and Might */
+.mon1e.character-sheet .page-top {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.mon1e.character-sheet .identity-grid { display: flex; flex-direction: column; gap: 0.25rem; }
+.mon1e.character-sheet .identity-grid .field { flex-direction: row; align-items: baseline; gap: 0.4rem; }
+.mon1e.character-sheet .identity-grid .field input { flex: 1; min-width: 0; }
+.mon1e.character-sheet .archetype { text-align: center; align-self: end; }
+.mon1e.character-sheet .archetype input,
+.mon1e.character-sheet .group-archetype input { border: 1px solid var(--mon1e-line); height: 2.5rem; text-align: center; }
+.mon1e.character-sheet .top-right { display: flex; flex-direction: column; gap: 0.75rem; }
+.mon1e.character-sheet .class-levels { width: 100%; text-align: center; }
+.mon1e.character-sheet .class-levels input { width: 100%; }
+.mon1e.character-sheet .might { flex-direction: row; align-items: center; justify-content: flex-end; font-size: 1.4rem; }
+.mon1e.character-sheet .might input { width: 4rem; border: 1px solid var(--mon1e-line); height: 2.5rem; }
 
-/* Centre diagram */
-.mon1e.character-sheet .diagram { margin: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.mon1e.character-sheet .diagram-numbers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
-.mon1e.character-sheet .diagram-flags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem 1rem; }
-.mon1e.character-sheet .diagram-flags .state { display: flex; align-items: center; gap: 0.25rem; }
-.mon1e.character-sheet .disorders { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem; }
+/* Centre diagram area: scars/disorders left and right, cross in the middle */
+.mon1e.character-sheet .diagram-area {
+  display: grid;
+  grid-template-columns: 1fr 2.6fr 1fr;
+  grid-template-areas:
+    "roadScars cross driveScars"
+    "roadDisorders cross driveDisorders"
+    "focus archetype groupScars"
+    "focus archetype groupDisorders";
+  gap: 0.5rem 1rem;
+}
+.mon1e.character-sheet .diagram-area .roadScars { grid-area: roadScars; }
+.mon1e.character-sheet .diagram-area .roadDisorders { grid-area: roadDisorders; }
+.mon1e.character-sheet .diagram-area .driveScars { grid-area: driveScars; }
+.mon1e.character-sheet .diagram-area .driveDisorders { grid-area: driveDisorders; }
+.mon1e.character-sheet .diagram-area .groupScars { grid-area: groupScars; }
+.mon1e.character-sheet .diagram-area .groupDisorders { grid-area: groupDisorders; }
+.mon1e.character-sheet .diagram-area .diagram { grid-area: cross; display: block; }
+.mon1e.character-sheet .diagram-area .focus-statement { grid-area: focus; }
+.mon1e.character-sheet .diagram-area .group-archetype { grid-area: archetype; text-align: center; }
+.mon1e.character-sheet .diagram-area legend { border-bottom: 0; text-align: left; font-size: 0.95rem; }
+.mon1e.character-sheet .disorders { display: flex; flex-direction: column; gap: 0.25rem; }
 .mon1e.character-sheet .disorders button { align-self: flex-start; width: 2rem; }
 
-/* Talents */
-.mon1e.character-sheet .talents { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem; }
-.mon1e.character-sheet .talent-row { display: grid; grid-template-columns: 1fr 5rem 2rem; gap: 0.25rem; align-items: center; }
-.mon1e.character-sheet .talents > button { align-self: flex-start; width: 2rem; }
+/* Cross: hexagons (Willpower, Burden, Charge, Discord, Group Focus) and their flags */
+.mon1e.character-sheet .cross {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-areas:
+    ". . willpower . ."
+    "wayward roadFanatic . driveFanatic aimless"
+    "burden burden . charge charge"
+    "burdened . . . laden"
+    ". discord . radical ."
+    ". shaken groupFocus . .";
+  gap: 0.35rem;
+  align-items: center;
+  justify-items: center;
+}
+.mon1e.character-sheet .cross .willpower { grid-area: willpower; }
+.mon1e.character-sheet .cross .burden { grid-area: burden; }
+.mon1e.character-sheet .cross .charge { grid-area: charge; }
+.mon1e.character-sheet .cross .discord { grid-area: discord; }
+.mon1e.character-sheet .cross .groupFocus { grid-area: groupFocus; }
+.mon1e.character-sheet .cross .wayward { grid-area: wayward; }
+.mon1e.character-sheet .cross .roadFanatic { grid-area: roadFanatic; }
+.mon1e.character-sheet .cross .driveFanatic { grid-area: driveFanatic; }
+.mon1e.character-sheet .cross .aimless { grid-area: aimless; }
+.mon1e.character-sheet .cross .burdened { grid-area: burdened; }
+.mon1e.character-sheet .cross .laden { grid-area: laden; }
+.mon1e.character-sheet .cross .radical { grid-area: radical; }
+.mon1e.character-sheet .cross .shaken { grid-area: shaken; }
+.mon1e.character-sheet .hex {
+  position: relative;
+  width: 6.5rem;
+  height: 5.6rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--mon1e-line);
+  clip-path: var(--mon1e-hex);
+}
+.mon1e.character-sheet .hex::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: var(--mon1e-fill);
+  clip-path: var(--mon1e-hex);
+}
+.mon1e.character-sheet .hex > * { position: relative; }
+.mon1e.character-sheet .hex span { font-size: 1.05rem; }
+.mon1e.character-sheet .hex input { width: 3rem; }
+/* clip-path hides outlines on the input, so the ring goes on the hexagon */
+.mon1e.character-sheet .hex:focus-within { background: var(--mon1e-focus); }
+.mon1e.character-sheet .flag { font-size: 0.85rem; white-space: nowrap; }
+.mon1e.character-sheet .state { display: flex; align-items: center; gap: 0.25rem; }
+
+/* Stats row: attributes | aptitudes | brawls + encounters | health + composure */
+.mon1e.character-sheet .stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.9fr 1.3fr;
+  gap: 1rem;
+  align-items: start;
+}
+.mon1e.character-sheet .stack { display: flex; flex-direction: column; gap: 0.75rem; }
+.mon1e.character-sheet .stat-list.column { display: flex; flex-direction: column; gap: 0.2rem; }
+.mon1e.character-sheet .stat-list .field { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 0.4rem; }
+.mon1e.character-sheet .stat-list .field input[type="number"] { width: 3rem; flex: 0 0 auto; }
+
+/* Health, Composure and scar gauges */
+.mon1e.character-sheet .track-boxes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
+.mon1e.character-sheet .track-boxes button { flex: 0 0 auto; width: 2rem; }
+.mon1e.character-sheet .track-states { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin-top: 0.4rem; font-size: 0.85rem; }
+
+/* Bottom row: skills (3 columns of 7, printed order) | talents (2 columns) */
+.mon1e.character-sheet .bottom-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.mon1e.character-sheet .stat-list.skills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(7, auto);
+  grid-auto-flow: column;
+  gap: 0.2rem 1rem;
+}
+.mon1e.character-sheet .talent-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1rem; }
+.mon1e.character-sheet .talent-row { display: grid; grid-template-columns: 1fr 3rem 1.75rem; gap: 0.25rem; align-items: center; }
+.mon1e.character-sheet .talent-row input { min-width: 0; }
+.mon1e.character-sheet .talents > button { margin-top: 0.4rem; width: 2rem; }

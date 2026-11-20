@@ -15,7 +15,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["mon1e", "character-sheet"],
     tag: "form",
-    position: { width: 720, height: 640 },
+    position: { width: 900, height: 780 },
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {

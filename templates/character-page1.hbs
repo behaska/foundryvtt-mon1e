@@ -1,183 +1,199 @@
 <section class="tab {{tabs.page1.cssClass}}" data-tab="page1" data-group="primary">
-  <div class="identity-grid">
-    <label class="field"><span>{{localize "MON1E.Character.species"}}</span>
-      <input type="text" name="system.species" value="{{source.system.species}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.ancestry"}}</span>
-      <input type="text" name="system.ancestry" value="{{source.system.ancestry}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.moonSignature"}}</span>
-      <input type="text" name="system.moonSignature" value="{{source.system.moonSignature}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.kaon"}}</span>
-      <input type="number" step="1" name="system.kaon" value="{{source.system.kaon}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.zaon"}}</span>
-      <input type="number" step="1" name="system.zaon" value="{{source.system.zaon}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.zaonScars"}}</span>
-      <input type="number" step="1" name="system.zaonScars" value="{{source.system.zaonScars}}"></label>
-    <label class="field"><span>{{localize "MON1E.Character.might"}}</span>
-      <input type="number" step="1" name="system.might" value="{{source.system.might}}"></label>
-    <label class="field wide"><span>{{localize "MON1E.Character.archetype"}}</span>
+  <div class="page-top">
+    <div class="identity-grid">
+      <label class="field"><span>{{localize "MON1E.Character.species"}}</span>
+        <input type="text" name="system.species" value="{{source.system.species}}"></label>
+      <label class="field"><span>{{localize "MON1E.Character.ancestry"}}</span>
+        <input type="text" name="system.ancestry" value="{{source.system.ancestry}}"></label>
+      <label class="field"><span>{{localize "MON1E.Character.moonSignature"}}</span>
+        <input type="text" name="system.moonSignature" value="{{source.system.moonSignature}}"></label>
+      <label class="field"><span>{{localize "MON1E.Character.kaon"}}</span>
+        <input type="number" step="1" name="system.kaon" value="{{source.system.kaon}}"></label>
+      <label class="field"><span>{{localize "MON1E.Character.zaon"}}</span>
+        <input type="number" step="1" name="system.zaon" value="{{source.system.zaon}}"></label>
+      <label class="field"><span>{{localize "MON1E.Character.zaonScars"}}</span>
+        <input type="number" step="1" name="system.zaonScars" value="{{source.system.zaonScars}}"></label>
+    </div>
+
+    <label class="field archetype"><span>{{localize "MON1E.Character.archetype"}}</span>
       <input type="text" name="system.archetype" value="{{source.system.archetype}}"></label>
+
+    <div class="top-right">
+      <table class="class-levels">
+        <thead>
+          <tr>
+            <th>{{localize "MON1E.Character.class"}}</th>
+            <th>{{localize "MON1E.Character.subClass"}}</th>
+            <th>{{localize "MON1E.Character.level"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each source.system.classLevels}}
+          <tr>
+            <td><input type="text" name="system.classLevels.{{@index}}.class" value="{{this.class}}"></td>
+            <td><input type="text" name="system.classLevels.{{@index}}.subClass" value="{{this.subClass}}"></td>
+            <td><input type="number" step="1" name="system.classLevels.{{@index}}.level" value="{{this.level}}"></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <label class="field might"><span>{{localize "MON1E.Character.might"}}</span>
+        <input type="number" step="1" name="system.might" value="{{source.system.might}}"></label>
+    </div>
   </div>
 
-  <table class="class-levels">
-    <thead>
-      <tr>
-        <th>{{localize "MON1E.Character.class"}}</th>
-        <th>{{localize "MON1E.Character.subClass"}}</th>
-        <th>{{localize "MON1E.Character.level"}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each source.system.classLevels}}
-      <tr>
-        <td><input type="text" name="system.classLevels.{{@index}}.class" value="{{this.class}}"></td>
-        <td><input type="text" name="system.classLevels.{{@index}}.subClass" value="{{this.subClass}}"></td>
-        <td><input type="number" step="1" name="system.classLevels.{{@index}}.level" value="{{this.level}}"></td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-  <fieldset class="stat-list">
-    <legend>{{localize "MON1E.Character.attributes"}}</legend>
-    {{#each attributesRows}}
-    <label class="field">
-      <span>{{label}}</span>
-      <input type="hidden" name="system.attributes.{{index}}.key" value="{{key}}">
-      <input type="number" step="1" name="system.attributes.{{index}}.value" value="{{value}}">
-    </label>
+  <div class="diagram-area">
+    {{#each scarTracks}}
+    <fieldset class="track scars {{name}}">
+      <legend>{{label}}</legend>
+      <div class="track-boxes">
+        <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="-1"
+          title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+        {{#each boxes}}
+        <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+        {{/each}}
+        <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="1"
+          title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+      </div>
+    </fieldset>
     {{/each}}
-  </fieldset>
 
-  <fieldset class="stat-list">
-    <legend>{{localize "MON1E.Character.aptitudes"}}</legend>
-    {{#each aptitudesRows}}
-    <label class="field">
-      <span>{{label}}</span>
-      <input type="hidden" name="system.aptitudes.{{index}}.key" value="{{key}}">
-      <input type="number" step="1" name="system.aptitudes.{{index}}.value" value="{{value}}">
-    </label>
+    {{#each disorders}}
+    <fieldset class="disorders {{key}}">
+      <legend>{{label}}</legend>
+      {{#each lines}}
+      <input type="text" name="system.{{../key}}.{{index}}" value="{{value}}" aria-label="{{localize "MON1E.Disorders.line"}} {{number}}">
+      {{/each}}
+      <button type="button" data-action="addDisorder" data-list="{{key}}"
+        title="{{localize "MON1E.Disorders.add"}}" aria-label="{{localize "MON1E.Disorders.add"}}">+</button>
+    </fieldset>
     {{/each}}
-  </fieldset>
 
-  <fieldset class="stat-list skills">
-    <legend>{{localize "MON1E.Character.skills"}}</legend>
-    {{#each skillsRows}}
-    <label class="field">
-      <span>{{label}}</span>
-      <input type="hidden" name="system.skills.{{index}}.key" value="{{key}}">
-      <input type="number" step="1" name="system.skills.{{index}}.value" value="{{value}}">
-    </label>
-    {{/each}}
-  </fieldset>
-
-  <fieldset class="stat-list pair">
-    <legend>{{localize "MON1E.Character.brawls"}}</legend>
-    <label class="field"><span>{{localize "MON1E.Brawls.armour"}}</span>
-      <input type="number" step="1" name="system.brawls.armour" value="{{source.system.brawls.armour}}"></label>
-    <label class="field"><span>{{localize "MON1E.Brawls.weapon"}}</span>
-      <input type="number" step="1" name="system.brawls.weapon" value="{{source.system.brawls.weapon}}"></label>
-  </fieldset>
-
-  <fieldset class="stat-list pair">
-    <legend>{{localize "MON1E.Character.encounters"}}</legend>
-    <label class="field"><span>{{localize "MON1E.Encounters.philosophy"}}</span>
-      <input type="number" step="1" name="system.encounters.philosophy" value="{{source.system.encounters.philosophy}}"></label>
-    <label class="field"><span>{{localize "MON1E.Encounters.adornment"}}</span>
-      <input type="number" step="1" name="system.encounters.adornment" value="{{source.system.encounters.adornment}}"></label>
-  </fieldset>
-  <fieldset class="track health">
-    <legend>{{localize "MON1E.Character.health"}}</legend>
-    <div class="track-boxes">
-      <button type="button" data-action="adjustTrack" data-track="health" data-delta="-1"
-        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
-      {{#each healthTrack.boxes}}
-      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
-      {{/each}}
-      <button type="button" data-action="adjustTrack" data-track="health" data-delta="1"
-        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+    <div class="diagram" role="group" aria-label="{{localize "MON1E.Character.diagram"}}">
+      <div class="cross">
+        {{#each diagramNumbers}}
+        <label class="field hex {{key}}"><span>{{label}}</span>
+          <input type="number" step="1" name="system.{{key}}" value="{{value}}"></label>
+        {{/each}}
+        {{#each diagramFlags}}
+        <label class="state flag {{key}}"><input type="checkbox" name="system.diagramFlags.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+        {{/each}}
+      </div>
     </div>
-    <div class="track-states">
-      {{#each healthTrack.states}}
-      <label class="state"><input type="checkbox" name="system.health.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
-      {{/each}}
-    </div>
-  </fieldset>
-
-  <fieldset class="track composure">
-    <legend>{{localize "MON1E.Character.composure"}}</legend>
-    <div class="track-boxes">
-      <button type="button" data-action="adjustTrack" data-track="composure" data-delta="-1"
-        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
-      {{#each composureTrack.boxes}}
-      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
-      {{/each}}
-      <button type="button" data-action="adjustTrack" data-track="composure" data-delta="1"
-        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
-    </div>
-    <div class="track-states">
-      {{#each composureTrack.states}}
-      <label class="state"><input type="checkbox" name="system.composure.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
-      {{/each}}
-    </div>
-  </fieldset>
-
-  <fieldset class="diagram">
-    <legend>{{localize "MON1E.Character.diagram"}}</legend>
-    <div class="diagram-numbers">
-      {{#each diagramNumbers}}
-      <label class="field"><span>{{label}}</span>
-        <input type="number" step="1" name="system.{{key}}" value="{{value}}"></label>
-      {{/each}}
-    </div>
-    <div class="diagram-flags">
-      {{#each diagramFlags}}
-      <label class="state"><input type="checkbox" name="system.diagramFlags.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
-      {{/each}}
-    </div>
-    <label class="field"><span>{{localize "MON1E.Character.focusStatement"}}</span>
+    <label class="field focus-statement"><span>{{localize "MON1E.Character.focusStatement"}}</span>
       <textarea name="system.focusStatement" rows="3">{{source.system.focusStatement}}</textarea></label>
-    <label class="field"><span>{{localize "MON1E.Character.groupArchetype"}}</span>
+    <label class="field group-archetype"><span>{{localize "MON1E.Character.groupArchetype"}}</span>
       <input type="text" name="system.groupArchetype" value="{{source.system.groupArchetype}}"></label>
-  </fieldset>
+  </div>
 
-  {{#each scarTracks}}
-  <fieldset class="track scars {{name}}">
-    <legend>{{label}}</legend>
-    <div class="track-boxes">
-      <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="-1"
-        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
-      {{#each boxes}}
-      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+  <div class="stats-row">
+    <fieldset class="stat-list column">
+      <legend>{{localize "MON1E.Character.attributes"}}</legend>
+      {{#each attributesRows}}
+      <label class="field">
+        <span>{{label}}</span>
+        <input type="hidden" name="system.attributes.{{index}}.key" value="{{key}}">
+        <input type="number" step="1" name="system.attributes.{{index}}.value" value="{{value}}">
+      </label>
       {{/each}}
-      <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="1"
-        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
-    </div>
-  </fieldset>
-  {{/each}}
+    </fieldset>
 
-  {{#each disorders}}
-  <fieldset class="disorders {{key}}">
-    <legend>{{label}}</legend>
-    {{#each lines}}
-    <input type="text" name="system.{{../key}}.{{index}}" value="{{value}}" aria-label="{{localize "MON1E.Disorders.line"}} {{number}}">
-    {{/each}}
-    <button type="button" data-action="addDisorder" data-list="{{key}}"
-      title="{{localize "MON1E.Disorders.add"}}" aria-label="{{localize "MON1E.Disorders.add"}}">+</button>
-  </fieldset>
-  {{/each}}
+    <fieldset class="stat-list column">
+      <legend>{{localize "MON1E.Character.aptitudes"}}</legend>
+      {{#each aptitudesRows}}
+      <label class="field">
+        <span>{{label}}</span>
+        <input type="hidden" name="system.aptitudes.{{index}}.key" value="{{key}}">
+        <input type="number" step="1" name="system.aptitudes.{{index}}.value" value="{{value}}">
+      </label>
+      {{/each}}
+    </fieldset>
 
-  <fieldset class="talents">
-    <legend>{{localize "MON1E.Character.talents"}}</legend>
-    {{#each talents}}
-    <div class="talent-row">
-      <input type="text" name="system.talents.{{index}}.label" value="{{label}}"
-        aria-label="{{localize "MON1E.Talents.label"}} {{number}}">
-      <input type="number" step="1" name="system.talents.{{index}}.value" value="{{value}}"
-        aria-label="{{localize "MON1E.Talents.value"}} {{number}}">
-      <button type="button" data-action="removeTalent" data-index="{{index}}"
-        title="{{localize "MON1E.Talents.remove"}}" aria-label="{{localize "MON1E.Talents.remove"}} {{number}}">&minus;</button>
+    <div class="stack">
+      <fieldset class="stat-list column">
+        <legend>{{localize "MON1E.Character.brawls"}}</legend>
+        <label class="field"><span>{{localize "MON1E.Brawls.armour"}}</span>
+          <input type="number" step="1" name="system.brawls.armour" value="{{source.system.brawls.armour}}"></label>
+        <label class="field"><span>{{localize "MON1E.Brawls.weapon"}}</span>
+          <input type="number" step="1" name="system.brawls.weapon" value="{{source.system.brawls.weapon}}"></label>
+      </fieldset>
+
+      <fieldset class="stat-list column">
+        <legend>{{localize "MON1E.Character.encounters"}}</legend>
+        <label class="field"><span>{{localize "MON1E.Encounters.philosophy"}}</span>
+          <input type="number" step="1" name="system.encounters.philosophy" value="{{source.system.encounters.philosophy}}"></label>
+        <label class="field"><span>{{localize "MON1E.Encounters.adornment"}}</span>
+          <input type="number" step="1" name="system.encounters.adornment" value="{{source.system.encounters.adornment}}"></label>
+      </fieldset>
     </div>
-    {{/each}}
-    <button type="button" data-action="addTalent"
-      title="{{localize "MON1E.Talents.add"}}" aria-label="{{localize "MON1E.Talents.add"}}">+</button>
-  </fieldset>
+
+    <div class="stack">
+      <fieldset class="track health">
+        <legend>{{localize "MON1E.Character.health"}}</legend>
+        <div class="track-boxes">
+          <button type="button" data-action="adjustTrack" data-track="health" data-delta="-1"
+            title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+          {{#each healthTrack.boxes}}
+          <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+          {{/each}}
+          <button type="button" data-action="adjustTrack" data-track="health" data-delta="1"
+            title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+        </div>
+        <div class="track-states">
+          {{#each healthTrack.states}}
+          <label class="state"><input type="checkbox" name="system.health.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+          {{/each}}
+        </div>
+      </fieldset>
+
+      <fieldset class="track composure">
+        <legend>{{localize "MON1E.Character.composure"}}</legend>
+        <div class="track-boxes">
+          <button type="button" data-action="adjustTrack" data-track="composure" data-delta="-1"
+            title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+          {{#each composureTrack.boxes}}
+          <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+          {{/each}}
+          <button type="button" data-action="adjustTrack" data-track="composure" data-delta="1"
+            title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+        </div>
+        <div class="track-states">
+          {{#each composureTrack.states}}
+          <label class="state"><input type="checkbox" name="system.composure.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+          {{/each}}
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <fieldset class="stat-list skills">
+      <legend>{{localize "MON1E.Character.skills"}}</legend>
+      {{#each skillsRows}}
+      <label class="field">
+        <span>{{label}}</span>
+        <input type="hidden" name="system.skills.{{index}}.key" value="{{key}}">
+        <input type="number" step="1" name="system.skills.{{index}}.value" value="{{value}}">
+      </label>
+      {{/each}}
+    </fieldset>
+
+    <fieldset class="talents">
+      <legend>{{localize "MON1E.Character.talents"}}</legend>
+      <div class="talent-rows">
+        {{#each talents}}
+        <div class="talent-row">
+          <input type="text" name="system.talents.{{index}}.label" value="{{label}}"
+            aria-label="{{localize "MON1E.Talents.label"}} {{number}}">
+          <input type="number" step="1" name="system.talents.{{index}}.value" value="{{value}}"
+            aria-label="{{localize "MON1E.Talents.value"}} {{number}}">
+          <button type="button" data-action="removeTalent" data-index="{{index}}"
+            title="{{localize "MON1E.Talents.remove"}}" aria-label="{{localize "MON1E.Talents.remove"}} {{number}}">&minus;</button>
+        </div>
+        {{/each}}
+      </div>
+      <button type="button" data-action="addTalent"
+        title="{{localize "MON1E.Talents.add"}}" aria-label="{{localize "MON1E.Talents.add"}}">+</button>
+    </fieldset>
+  </div>
 </section>
