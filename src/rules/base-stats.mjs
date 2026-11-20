@@ -8,6 +8,13 @@ export const APTITUDE_KEYS = Object.freeze([
   "closeCombat", "rangedCombat", "battle", "moonMagic", "spiritMagic", "kaonMagic", "cosmicMagic"
 ]);
 
+/** Base skills, in the order printed on page 1 (three columns of seven, read column by column). */
+export const SKILL_KEYS = Object.freeze([
+  "alchemy", "animalKen", "arts", "athletics", "command", "communication", "craft",
+  "divination", "empathy", "folkLore", "healing", "landLore", "marksmanship", "meditation",
+  "melee", "mysteries", "stealth", "stewardship", "survival", "thievery", "vigilance"
+]);
+
 /**
  * @typedef {object} StatRow
  * @property {string} key Stable id of the entry.

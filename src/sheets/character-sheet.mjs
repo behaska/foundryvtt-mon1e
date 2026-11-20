@@ -45,6 +45,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }));
     context.attributesRows = rows(this.document.system.attributes, "Attributes");
     context.aptitudesRows = rows(this.document.system.aptitudes, "Aptitudes");
+    context.skillsRows = rows(this.document.system.skills, "Skills");
     return context;
   }
 }

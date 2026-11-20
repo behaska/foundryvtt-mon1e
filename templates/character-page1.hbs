@@ -57,4 +57,15 @@
     </label>
     {{/each}}
   </fieldset>
+
+  <fieldset class="stat-list skills">
+    <legend>{{localize "MON1E.Character.skills"}}</legend>
+    {{#each skillsRows}}
+    <label class="field">
+      <span>{{label}}</span>
+      <input type="hidden" name="system.skills.{{index}}.key" value="{{key}}">
+      <input type="number" step="1" name="system.skills.{{index}}.value" value="{{value}}">
+    </label>
+    {{/each}}
+  </fieldset>
 </section>

@@ -25,7 +25,8 @@
       "subClass": "Sub-Class",
       "level": "Level",
       "attributes": "Base Attributes",
-      "aptitudes": "Base Aptitudes"
+      "aptitudes": "Base Aptitudes",
+      "skills": "Skills"
     },
     "Attributes": {
       "strength": "Strength",
@@ -45,6 +46,29 @@
       "spiritMagic": "Spirit Magic",
       "kaonMagic": "Kaon Magic",
       "cosmicMagic": "Cosmic Magic"
+    },
+    "Skills": {
+      "alchemy": "Alchemy",
+      "animalKen": "Animal Ken",
+      "arts": "Arts",
+      "athletics": "Athletics",
+      "command": "Command",
+      "communication": "Communication",
+      "craft": "Craft",
+      "divination": "Divination",
+      "empathy": "Empathy",
+      "folkLore": "Folk Lore",
+      "healing": "Healing",
+      "landLore": "Land Lore",
+      "marksmanship": "Marksmanship",
+      "meditation": "Meditation",
+      "melee": "Melee",
+      "mysteries": "Mysteries",
+      "stealth": "Stealth",
+      "stewardship": "Stewardship",
+      "survival": "Survival",
+      "thievery": "Thievery",
+      "vigilance": "Vigilance"
     }
   }
 }

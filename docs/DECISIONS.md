@@ -15,3 +15,4 @@
 | 2026-11-20 | Base attributes (8) and aptitudes (7) stored as two lists of `{key, value}` rows (integers, default 0, no bounds), seeded in printed order. Visible labels come from i18n by key, not stored. | Issue #13; `docs/RULES.md` A2, A3, A9 (answers from the maintainer, **not yet confirmed by the Mon creator**). Rows keep A3's extensible lists migration-free. |
 | 2026-11-20 | The (+) add button, custom labels and removal rules for attributes and aptitudes are deferred to a later issue. Label casing is title case (the PDF prints attributes in uppercase): presentation only. | Maintainer decision on issue #13. |
 
+| 2026-11-20 | Skills (21) stored as a list of `{key, value}` rows, same shape as attributes and aptitudes (integers, default 0, no bounds), seeded in printed order; labels from i18n by key. The (+) button and custom labels stay deferred. | Issue #14; `docs/RULES.md` A2, A3, A9 (answers from the maintainer, **not yet confirmed by the Mon creator**). |

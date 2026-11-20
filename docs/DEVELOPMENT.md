@@ -94,3 +94,21 @@ Steps:
 4. Reload (F5), then close and reopen the world; values intact.
 5. Labels localized, no raw `MON1E.*` keys, console clean. Note the Foundry build.
 
+
+## Verification record: skills (issue #14)
+Automated, 2026-11-20: `npm run check` **passed** (16 tests). Covers the 21 skill keys in printed order, unique, and the i18n labels. Does not cover the model, sheet or `_prepareContext`.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed):
+- Skills section shows 21 localized fields; no raw `MON1E.*` key: **passed**.
+- Edited values display and persist after closing and reopening the world: **passed**.
+- Console: no error: **passed**.
+- Scroll fix (CSS): sheet scrolls, header and tab pinned: **passed**.
+- Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): the Skills section shows 21 fields at 0 (defaults through `initial`; no migration).
+2. Create a new actor: same.
+3. Edit all 21 values; close and reopen the sheet; values intact.
+4. Reload (F5), then close and reopen the world; values intact.
+5. Labels localized, no raw `MON1E.*` keys, console clean, attributes and aptitudes unaffected. Note the Foundry build.
+6. Scroll: a vertical scrollbar appears inside the sheet, Name and tab stay pinned, the last Skills row (Vigilance) is reachable, scroll position survives an edit re-render.

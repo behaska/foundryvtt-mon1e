@@ -14,3 +14,19 @@
   gap: 0.5rem;
   margin: 0.5rem;
 }
+.mon1e.character-sheet .stat-list.skills { grid-template-columns: repeat(3, 1fr); }
+
+/* Layout: header and tabs stay pinned, the active page scrolls.
+   `scrollable` in PARTS only preserves scroll position; it does not create a scroll container. */
+.mon1e.character-sheet .window-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mon1e.character-sheet .sheet-header,
+.mon1e.character-sheet .sheet-tabs { flex: 0 0 auto; }
+.mon1e.character-sheet .tab {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}

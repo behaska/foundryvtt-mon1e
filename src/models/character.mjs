@@ -1,4 +1,4 @@
-import { APTITUDE_KEYS, ATTRIBUTE_KEYS, defaultStatRows } from "../rules/base-stats.mjs";
+import { APTITUDE_KEYS, ATTRIBUTE_KEYS, SKILL_KEYS, defaultStatRows } from "../rules/base-stats.mjs";
 import { defaultClassLevelRows } from "../rules/identity.mjs";
 
 const { ArrayField, NumberField, SchemaField, StringField } = foundry.data.fields;
@@ -20,7 +20,7 @@ const statRowsField = (keys) =>
   );
 
 /**
- * Data model of a `character` Actor. Page 1 identity fields, base attributes and aptitudes, raw values.
+ * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes and skills, raw values.
  * The character name is the Actor `name`, not stored here.
  */
 export class CharacterData extends foundry.abstract.TypeDataModel {
@@ -46,7 +46,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         { initial: () => defaultClassLevelRows() }
       ),
       attributes: statRowsField(ATTRIBUTE_KEYS),
-      aptitudes: statRowsField(APTITUDE_KEYS)
+      aptitudes: statRowsField(APTITUDE_KEYS),
+      skills: statRowsField(SKILL_KEYS)
     };
   }
 }
