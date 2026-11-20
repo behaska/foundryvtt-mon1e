@@ -20,7 +20,8 @@ ln -s /path/to/foundryvtt-mon1e mon1e
 | `npm run typecheck` | `tsc --noEmit` (`allowJs` + `checkJs`) |
 | `npm test` | `node:test` unit tests (`tests/`) |
 | `npm run check:manifest` | `scripts/check-manifest.mjs`: validate `system.json` and that referenced files exist |
-| `npm run check` | typecheck, then tests, then manifest check |
+| `npm run lint` | `eslint .` (config: `eslint.config.mjs`) |
+| `npm run check` | typecheck, then tests, then manifest check, then lint |
 
 Single test file: `node --test tests/<file>.test.mjs`.
 
@@ -32,6 +33,13 @@ Source: the Foundry system development article (https://foundryvtt.com/article/s
 Not covered: that Foundry actually loads the system, release fields (`manifest`, `download`, `url`), and `tsconfig` scope (unchanged; the script is typechecked only through the test that imports it).
 
 Verification, 2026-11-20: `npm run check` **passed** (48 tests). With `styles/mon1e.css` moved away, `npm run check` exits 1 and `node scripts/check-manifest.mjs` prints `styles: file not found: styles/mon1e.css`. With `package.json` version set to 0.0.2, `check:manifest` exits 1 with a version mismatch message. Both changes were reverted.
+
+### Lint and Dependabot (issue #25)
+`eslint.config.mjs` (flat config; `.mjs` instead of the `.js` named in the framing brief, to match the repo's ES module convention) lints `src/`, `scripts/` and `tests/` with `@eslint/js` `recommended` only, plus `no-unused-vars` ignoring `_`-prefixed args. These are rules that catch certain errors, and they block. Style rules (quotes, semicolons, indent, `prefer-const`, `no-var`) are not enabled and never block. Foundry globals used by `src/` (`game`, `foundry`, `Hooks`, `CONFIG`, `Actor`) are declared by hand in the config. Not linted: `templates/`, `lang/`, `styles/`, `documentation/`, tooling folders.
+
+`.github/dependabot.yml` opens weekly update PRs for `npm` and `github-actions` (minor/patch grouped, majors separate, max 5 open each). Dependabot is only verified on GitHub after merge to `main`; nothing local tests it.
+
+Verification, 2026-11-20 (ESLint 10.15, Node 26.11.1): `npm run check` **passed** with lint clean on the current tree. An undefined identifier in `src/` makes `npm run lint` exit 1. A file with single quotes, no semicolons and `var` lints clean. Both temporary files were removed. Dependabot acceptance on GitHub: **not yet verified**.
 
 ## Daily loop
 1. Edit under `src/` (changes are picked up through the symlink, no copy or build).

@@ -6,11 +6,15 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/",
     "check:manifest": "node scripts/check-manifest.mjs",
-    "check": "npm run typecheck && npm test && npm run check:manifest"
+    "check": "npm run typecheck && npm test && npm run check:manifest && npm run lint",
+    "lint": "eslint ."
   },
   "private": true,
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
     "typescript": "^7.0.2"
   }
 }
