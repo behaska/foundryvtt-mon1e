@@ -15,6 +15,7 @@
   margin: 0.5rem;
 }
 .mon1e.character-sheet .stat-list.skills { grid-template-columns: repeat(3, 1fr); }
+.mon1e.character-sheet .stat-list.pair { grid-template-columns: repeat(2, 1fr); }
 
 /* Layout: header and tabs stay pinned, the active page scrolls.
    `scrollable` in PARTS only preserves scroll position; it does not create a scroll container. */

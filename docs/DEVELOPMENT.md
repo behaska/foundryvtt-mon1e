@@ -112,3 +112,16 @@ Steps:
 4. Reload (F5), then close and reopen the world; values intact.
 5. Labels localized, no raw `MON1E.*` keys, console clean, attributes and aptitudes unaffected. Note the Foundry build.
 6. Scroll: a vertical scrollbar appears inside the sheet, Name and tab stay pinned, the last Skills row (Vigilance) is reachable, scroll position survives an edit re-render.
+
+
+## Verification record: brawls and encounters (issue #15)
+Automated, 2026-11-20: `npm run check` **passed** (17 tests). Covers the key lists in printed order and the i18n labels and group titles. Does not cover the model, sheet or template.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): 4 fields shown and localized, values persist after reload, console clean. Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): Brawls (Armour, Weapon) and Encounters (Philosophy, Adornment) show 4 fields at 0 (schema `initial`; no migration).
+2. Create a new actor: same.
+3. Edit all 4 values; close and reopen the sheet; values intact.
+4. Reload (F5), then close and reopen the world; values intact.
+5. Labels localized, no raw `MON1E.*` keys, console clean, attributes, aptitudes and skills unaffected.

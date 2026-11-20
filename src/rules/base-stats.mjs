@@ -15,6 +15,12 @@ export const SKILL_KEYS = Object.freeze([
   "melee", "mysteries", "stealth", "stewardship", "survival", "thievery", "vigilance"
 ]);
 
+/** Brawls, in the order printed on page 1. */
+export const BRAWL_KEYS = Object.freeze(["armour", "weapon"]);
+
+/** Encounters, in the order printed on page 1. */
+export const ENCOUNTER_KEYS = Object.freeze(["philosophy", "adornment"]);
+
 /**
  * @typedef {object} StatRow
  * @property {string} key Stable id of the entry.

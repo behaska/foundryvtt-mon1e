@@ -68,4 +68,20 @@
     </label>
     {{/each}}
   </fieldset>
+
+  <fieldset class="stat-list pair">
+    <legend>{{localize "MON1E.Character.brawls"}}</legend>
+    <label class="field"><span>{{localize "MON1E.Brawls.armour"}}</span>
+      <input type="number" step="1" name="system.brawls.armour" value="{{source.system.brawls.armour}}"></label>
+    <label class="field"><span>{{localize "MON1E.Brawls.weapon"}}</span>
+      <input type="number" step="1" name="system.brawls.weapon" value="{{source.system.brawls.weapon}}"></label>
+  </fieldset>
+
+  <fieldset class="stat-list pair">
+    <legend>{{localize "MON1E.Character.encounters"}}</legend>
+    <label class="field"><span>{{localize "MON1E.Encounters.philosophy"}}</span>
+      <input type="number" step="1" name="system.encounters.philosophy" value="{{source.system.encounters.philosophy}}"></label>
+    <label class="field"><span>{{localize "MON1E.Encounters.adornment"}}</span>
+      <input type="number" step="1" name="system.encounters.adornment" value="{{source.system.encounters.adornment}}"></label>
+  </fieldset>
 </section>

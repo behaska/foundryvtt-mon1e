@@ -26,7 +26,17 @@
       "level": "Level",
       "attributes": "Base Attributes",
       "aptitudes": "Base Aptitudes",
-      "skills": "Skills"
+      "skills": "Skills",
+      "brawls": "Brawls",
+      "encounters": "Encounters"
+    },
+    "Brawls": {
+      "armour": "Armour",
+      "weapon": "Weapon"
+    },
+    "Encounters": {
+      "philosophy": "Philosophy",
+      "adornment": "Adornment"
     },
     "Attributes": {
       "strength": "Strength",

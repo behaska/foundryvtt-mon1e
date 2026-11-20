@@ -1,4 +1,4 @@
-import { APTITUDE_KEYS, ATTRIBUTE_KEYS, SKILL_KEYS, defaultStatRows } from "../rules/base-stats.mjs";
+import { APTITUDE_KEYS, ATTRIBUTE_KEYS, BRAWL_KEYS, ENCOUNTER_KEYS, SKILL_KEYS, defaultStatRows } from "../rules/base-stats.mjs";
 import { defaultClassLevelRows } from "../rules/identity.mjs";
 
 const { ArrayField, NumberField, SchemaField, StringField } = foundry.data.fields;
@@ -19,8 +19,12 @@ const statRowsField = (keys) =>
     { initial: () => defaultStatRows(keys) }
   );
 
+/** A fixed group of named integer fields, one per key. */
+const integerGroupField = (keys) =>
+  new SchemaField(Object.fromEntries(keys.map((key) => [key, integerField()])));
+
 /**
- * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes and skills, raw values.
+ * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes, skills, brawls and encounters, raw values.
  * The character name is the Actor `name`, not stored here.
  */
 export class CharacterData extends foundry.abstract.TypeDataModel {
@@ -47,7 +51,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       ),
       attributes: statRowsField(ATTRIBUTE_KEYS),
       aptitudes: statRowsField(APTITUDE_KEYS),
-      skills: statRowsField(SKILL_KEYS)
+      skills: statRowsField(SKILL_KEYS),
+      brawls: integerGroupField(BRAWL_KEYS),
+      encounters: integerGroupField(ENCOUNTER_KEYS)
     };
   }
 }
