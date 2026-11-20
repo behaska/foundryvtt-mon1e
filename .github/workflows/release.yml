@@ -1,0 +1,129 @@
+name: Release
+
+# Manual only. No pull_request trigger: fork PRs can never run this workflow or get a write token.
+# Nothing here publishes: `draft` creates a tag and a DRAFT release, a human publishes it, then
+# `verify-published` checks the public URLs.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "draft = verify main and create tag + draft release; verify-published = check public URLs after a human published"
+        type: choice
+        options: [draft, verify-published]
+        default: draft
+      version:
+        description: "Version without v prefix, e.g. 0.1.0. Must equal package.json and system.json."
+        type: string
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  # Name of the job in ci.yml whose success marks a commit as validated.
+  CI_CHECK: quality
+
+jobs:
+  verify:
+    name: Verify main and build the package
+    if: inputs.mode == 'draft' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require the validated head of main
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::$GITHUB_SHA is not the head of main ($head)"; exit 1
+          fi
+          failing=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/check-runs" \
+            --jq "[.check_runs[] | select(.name == \"$CI_CHECK\")] | if length == 0 then \"missing\" else ([.[] | select(.conclusion != \"success\")] | length | tostring) end")
+          if [ "$failing" != "0" ]; then
+            echo "::error::CI check '$CI_CHECK' is not green on $GITHUB_SHA (result: $failing)"; exit 1
+          fi
+      - name: Check version, tag and release
+        run: |
+          tags=$(gh api --paginate "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/" --jq '.[].ref | ltrimstr("refs/tags/")')
+          releases=$(gh release list --limit 1000 --json tagName --jq '.[].tagName')
+          node scripts/check-release.mjs --version "$VERSION" --tags "$tags" --releases "$releases"
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run package
+      - run: npm run verify:package
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mon1e-release-candidate
+          path: dist/
+          if-no-files-found: error
+
+  draft:
+    name: Create tag and draft release
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: mon1e-release-candidate
+          path: dist/
+      - name: Recheck before writing (drafts are only visible with write access)
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved to $head since verification; rerun"; exit 1
+          fi
+          tags=$(gh api --paginate "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/" --jq '.[].ref | ltrimstr("refs/tags/")')
+          releases=$(gh release list --limit 1000 --json tagName --jq '.[].tagName')
+          node scripts/check-release.mjs --version "$VERSION" --tags "$tags" --releases "$releases"
+          (cd dist && sha256sum -c SHA256SUMS)
+      - name: Create tag on the verified commit and the draft release
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/v$VERSION" -f sha="$GITHUB_SHA"
+          gh release create "v$VERSION" --draft --verify-tag --title "v$VERSION" \
+            --notes "Draft release of $GITHUB_SHA. Qualify the attached package in Foundry v14, then publish by hand." \
+            dist/mon1e.zip dist/system.json dist/SHA256SUMS
+
+  verify-published:
+    name: Check public release URLs
+    if: inputs.mode == 'verify-published'
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Check manifest, ZIP and checksums
+        run: |
+          base="https://github.com/$GITHUB_REPOSITORY/releases"
+          mkdir check && cd check
+          curl -fsSL "$base/latest/download/system.json" -o stable-system.json
+          for f in system.json mon1e.zip SHA256SUMS; do
+            curl -fsSL "$base/download/v$VERSION/$f" -o "$f"
+          done
+          [ "$(jq -r .version stable-system.json)" = "$VERSION" ] || { echo "::error::stable manifest version is not $VERSION (is it the latest release?)"; exit 1; }
+          [ "$(jq -r .download stable-system.json)" = "$base/download/v$VERSION/mon1e.zip" ] || { echo "::error::manifest download URL does not point at v$VERSION"; exit 1; }
+          cmp stable-system.json system.json
+          sha256sum -c SHA256SUMS
+          unzip -p mon1e.zip system.json | cmp - system.json

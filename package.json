@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/",
     "check:manifest": "node scripts/check-manifest.mjs",
+    "check:release": "node scripts/check-release.mjs",
     "check": "npm run typecheck && npm test && npm run check:manifest && npm run lint",
     "lint": "eslint .",
     "package": "node scripts/package.mjs",
