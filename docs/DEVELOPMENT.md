@@ -52,7 +52,7 @@ Verification, 2026-11-20: `npm run check` **passed** (61 tests). `npm run packag
 1. `verify` (`contents: read`, `checks: read`): the dispatched SHA must be the current head of `main`, the `quality` check from `ci.yml` must be green on it, and `scripts/check-release.mjs` must accept the version (semver without `v`, equal to `package.json` and `system.json`, no existing tag or release). It then runs `npm run check`, `package`, `verify:package` and uploads `dist/` as `mon1e-release-candidate`.
 2. `draft` (`contents: write`, GitHub environment `release`): downloads that exact artifact (no rebuild), rechecks that `main` has not moved and that the tag and release (drafts included, visible only with write access) do not exist, checks `SHA256SUMS`, creates the tag `v<version>` on the verified SHA, then `gh release create --draft --verify-tag` with `mon1e.zip`, `system.json`, `SHA256SUMS`.
 
-Then a human qualifies the attached ZIP in Foundry v14 (issue #28 protocol, not part of this workflow) and publishes the draft by hand.
+Then a human qualifies the attached ZIP in Foundry v14 with the protocol in [`QUALIFICATION.md`](QUALIFICATION.md) (issue #28, not part of this workflow) and publishes the draft by hand. A failed scenario or a missing record blocks publication; the record must name the Foundry build and the ZIP hash. The protocol does not validate Mon rules.
 
 **`mode: verify-published`**: downloads the stable `releases/latest/download/system.json` and the versioned `mon1e.zip`, `system.json`, `SHA256SUMS`; checks the manifest version and `download` URL, `sha256sum -c`, and that the manifest inside the ZIP equals the published one. It fails if the version is not the latest release.
 
