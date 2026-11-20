@@ -31,3 +31,10 @@
   min-height: 0;
   overflow-y: auto;
 }
+
+/* Health and Composure gauges */
+.mon1e.character-sheet .track { margin: 0.5rem; }
+.mon1e.character-sheet .track-boxes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
+.mon1e.character-sheet .track-boxes button { flex: 0 0 auto; width: 2rem; }
+.mon1e.character-sheet .track-states { display: flex; gap: 1rem; margin-top: 0.5rem; }
+.mon1e.character-sheet .track-states .state { display: flex; align-items: center; gap: 0.25rem; }

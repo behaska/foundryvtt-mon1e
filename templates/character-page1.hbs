@@ -84,4 +84,39 @@
     <label class="field"><span>{{localize "MON1E.Encounters.adornment"}}</span>
       <input type="number" step="1" name="system.encounters.adornment" value="{{source.system.encounters.adornment}}"></label>
   </fieldset>
+  <fieldset class="track health">
+    <legend>{{localize "MON1E.Character.health"}}</legend>
+    <div class="track-boxes">
+      <button type="button" data-action="adjustTrack" data-track="health" data-delta="-1"
+        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+      {{#each healthTrack.boxes}}
+      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+      {{/each}}
+      <button type="button" data-action="adjustTrack" data-track="health" data-delta="1"
+        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+    </div>
+    <div class="track-states">
+      {{#each healthTrack.states}}
+      <label class="state"><input type="checkbox" name="system.health.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  <fieldset class="track composure">
+    <legend>{{localize "MON1E.Character.composure"}}</legend>
+    <div class="track-boxes">
+      <button type="button" data-action="adjustTrack" data-track="composure" data-delta="-1"
+        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+      {{#each composureTrack.boxes}}
+      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+      {{/each}}
+      <button type="button" data-action="adjustTrack" data-track="composure" data-delta="1"
+        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+    </div>
+    <div class="track-states">
+      {{#each composureTrack.states}}
+      <label class="state"><input type="checkbox" name="system.composure.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+      {{/each}}
+    </div>
+  </fieldset>
 </section>

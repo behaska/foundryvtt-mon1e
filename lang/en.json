@@ -28,7 +28,19 @@
       "aptitudes": "Base Aptitudes",
       "skills": "Skills",
       "brawls": "Brawls",
-      "encounters": "Encounters"
+      "encounters": "Encounters",
+      "health": "Health",
+      "composure": "Composure"
+    },
+    "Tracks": {
+      "unconscious": "Unconscious",
+      "dying": "Dying",
+      "dead": "Dead",
+      "rattled": "Rattled",
+      "discomfited": "Discomfited",
+      "humiliated": "Humiliated",
+      "increase": "Add a box",
+      "decrease": "Remove a box"
     },
     "Brawls": {
       "armour": "Armour",

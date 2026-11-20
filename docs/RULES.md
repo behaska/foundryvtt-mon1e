@@ -114,6 +114,9 @@ Given by the maintainer on 2026-11-20, in two rounds. They are **not** confirmed
 
 All A items are answered. Nothing is open before the data model, except that the creator has not confirmed any of it (section C). Minimum and maximum values, including whether negatives are allowed, stay deferred under B.
 
+#### Stored for Health and Composure (issue #16, not a rule)
+Per gauge: the count of checked boxes (whole number, default 0) and three independent state flags (default off). The total number of boxes is **not stored and not known**: the sheet draws a placeholder minimum of 6 boxes (presentation only) and adds boxes as (+) goes beyond it. Box counts printed on the sheet remain **unconfirmed by the Mon creator** and must be asked. Floor at 0 in the (+)/(-) buttons is a UI guard, not a Mon rule.
+
 ### B. Deferred: answer when the matching mechanic is implemented
 - Value ranges (minimum, maximum, negatives allowed or not) and clamping for every numeric line. #10 allows raw values with no bounds.
 - Derived values: whether any of Might, Willpower, Burden, Charge, Discord, Group Focus, Health or Composure is computed.

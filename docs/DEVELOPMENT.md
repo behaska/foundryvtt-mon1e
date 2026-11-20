@@ -125,3 +125,17 @@ Steps:
 3. Edit all 4 values; close and reopen the sheet; values intact.
 4. Reload (F5), then close and reopen the world; values intact.
 5. Labels localized, no raw `MON1E.*` keys, console clean, attributes, aptitudes and skills unaffected.
+
+
+## Verification record: health and composure (issue #16)
+Automated, 2026-11-20: `npm run check` **passed** (23 tests). Covers state key order, `adjustFilled`, `boxesToDraw` and i18n labels. Does not cover the model, sheet, template or the (+)/(-) buttons.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): gauges and 6 state flags shown and localized, values persist after reload, console clean. Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): Health and Composure show the placeholder boxes unchecked and the 6 state checkboxes off (schema `initial`; no migration).
+2. Create a new actor: same.
+3. (+) checks boxes in sequence; (+) past the drawn boxes adds one; (-) removes one and stops at 0.
+4. Toggle each of the 6 state checkboxes independently; close and reopen the sheet; intact.
+5. Reload (F5), then close and reopen the world; filled counts and states intact.
+6. Labels localized, no raw `MON1E.*` keys, console clean, other sections unaffected. Unchecked state checkboxes persist as false.

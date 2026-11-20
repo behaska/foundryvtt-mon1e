@@ -1,4 +1,7 @@
 import { TEMPLATE_ROOT } from "../constants.mjs";
+import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS, adjustFilled, boxesToDraw } from "../rules/tracks.mjs";
+
+const TRACKS = ["health", "composure"];
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -11,8 +14,22 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     tag: "form",
     position: { width: 720, height: 640 },
     window: { resizable: true },
-    form: { submitOnChange: true, closeOnSubmit: false }
+    form: { submitOnChange: true, closeOnSubmit: false },
+    actions: { adjustTrack: CharacterSheet.#onAdjustTrack }
   };
+
+  /**
+   * (+)/(-) on a gauge. Reads `data-track` ("health" or "composure") and `data-delta` (+1 or -1).
+   * @this {CharacterSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   */
+  static async #onAdjustTrack(event, target) {
+    const { track, delta } = target.dataset;
+    if (!TRACKS.includes(track)) return;
+    const next = adjustFilled(this.document.system[track].filled, Number(delta));
+    await this.document.update({ [`system.${track}.filled`]: next });
+  }
 
   /**
    * One entry per sheet page. To add page 2: append a tab here, a template part
@@ -46,6 +63,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.attributesRows = rows(this.document.system.attributes, "Attributes");
     context.aptitudesRows = rows(this.document.system.aptitudes, "Aptitudes");
     context.skillsRows = rows(this.document.system.skills, "Skills");
+    const track = (name, stateKeys) => {
+      const filled = this.document.system[name].filled;
+      return {
+        name,
+        boxes: Array.from({ length: boxesToDraw(filled) }, (_, i) => ({ checked: i < filled })),
+        states: stateKeys.map((key) => ({
+          key,
+          label: game.i18n.localize(`MON1E.Tracks.${key}`),
+          checked: this.document.system[name][key]
+        }))
+      };
+    };
+    context.healthTrack = track("health", HEALTH_STATE_KEYS);
+    context.composureTrack = track("composure", COMPOSURE_STATE_KEYS);
     return context;
   }
 }
