@@ -23,7 +23,28 @@
       "might": "Might",
       "class": "Class",
       "subClass": "Sub-Class",
-      "level": "Level"
+      "level": "Level",
+      "attributes": "Base Attributes",
+      "aptitudes": "Base Aptitudes"
+    },
+    "Attributes": {
+      "strength": "Strength",
+      "toughness": "Toughness",
+      "agility": "Agility",
+      "perception": "Perception",
+      "charisma": "Charisma",
+      "resolve": "Resolve",
+      "intelligence": "Intelligence",
+      "spirit": "Spirit"
+    },
+    "Aptitudes": {
+      "closeCombat": "Close Combat",
+      "rangedCombat": "Ranged Combat",
+      "battle": "Battle",
+      "moonMagic": "Moon Magic",
+      "spiritMagic": "Spirit Magic",
+      "kaonMagic": "Kaon Magic",
+      "cosmicMagic": "Cosmic Magic"
     }
   }
 }

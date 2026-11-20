@@ -36,4 +36,25 @@
       {{/each}}
     </tbody>
   </table>
+  <fieldset class="stat-list">
+    <legend>{{localize "MON1E.Character.attributes"}}</legend>
+    {{#each attributesRows}}
+    <label class="field">
+      <span>{{label}}</span>
+      <input type="hidden" name="system.attributes.{{index}}.key" value="{{key}}">
+      <input type="number" step="1" name="system.attributes.{{index}}.value" value="{{value}}">
+    </label>
+    {{/each}}
+  </fieldset>
+
+  <fieldset class="stat-list">
+    <legend>{{localize "MON1E.Character.aptitudes"}}</legend>
+    {{#each aptitudesRows}}
+    <label class="field">
+      <span>{{label}}</span>
+      <input type="hidden" name="system.aptitudes.{{index}}.key" value="{{key}}">
+      <input type="number" step="1" name="system.aptitudes.{{index}}.value" value="{{value}}">
+    </label>
+    {{/each}}
+  </fieldset>
 </section>

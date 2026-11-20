@@ -75,3 +75,22 @@ Steps run:
 3. Reload (F5), then close and reopen the world; values intact.
 4. Console: no error or deprecation warning; no raw `MON1E.*` keys visible.
 Record date, Foundry build and results here.
+
+## Verification record: base attributes and aptitudes (issue #13)
+Automated, 2026-11-20: `npm run check` **passed** (15 tests: 8 attribute and 7 aptitude keys in printed order, unique, default rows value 0 and independent, every key has an i18n label). Does not cover the model, sheet or `_prepareContext`.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, screenshot and rendered HTML):
+- The issue #12 actor (created before this change) shows both sections with 8 attributes and 7 aptitudes, no migration: **passed**.
+- Labels localized (Base Attributes, Base Aptitudes, 15 names), no raw `MON1E.*` key: **passed**.
+- Edited non-zero values are rendered, and each row submits its hidden `key` input: **passed** (seen in the rendered HTML).
+- Persistence after closing and reopening the world: **passed** (reported by the maintainer).
+- A new actor starts with all 15 values at 0: **passed** (reported by the maintainer).
+- **Not confirmed yet**: clean console (answer was ambiguous); Foundry build.
+
+Steps:
+1. Open the existing issue #12 actor: the Base Attributes and Base Aptitudes sections show 8 and 7 fields at 0 (existing actors get defaults through `initial`; no migration).
+2. Create a new actor: same.
+3. Edit all 15 values; close and reopen the sheet; values intact.
+4. Reload (F5), then close and reopen the world; values intact.
+5. Labels localized, no raw `MON1E.*` keys, console clean. Note the Foundry build.
+
