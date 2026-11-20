@@ -19,9 +19,19 @@ ln -s /path/to/foundryvtt-mon1e mon1e
 |---|---|
 | `npm run typecheck` | `tsc --noEmit` (`allowJs` + `checkJs`) |
 | `npm test` | `node:test` unit tests (`tests/`) |
-| `npm run check` | typecheck, then tests |
+| `npm run check:manifest` | `scripts/check-manifest.mjs`: validate `system.json` and that referenced files exist |
+| `npm run check` | typecheck, then tests, then manifest check |
 
 Single test file: `node --test tests/<file>.test.mjs`.
+
+### Manifest validation (issue #24)
+`scripts/check-manifest.mjs` checks `system.json`: `id`, `title`, `description` (non-empty strings), `version` (string or number, must equal `package.json` `version`: bump both together), `compatibility` (`minimum` and `verified` numeric, `minimum <= verified <= maximum` when present), `esmodules`, `scripts` and `styles` (arrays), `languages[]` (`lang`, `name`, `path`), `documentTypes` (document type → subtype → object), `packs[].path` only when present. Every referenced path must be relative, use `/`, contain no `..` and exist on disk. Unknown keys are ignored. `--root <dir>` points the CLI at another tree.
+
+Source: the Foundry system development article (https://foundryvtt.com/article/system-development/). That page does not mention v14 (examples use `minimum: 12`), so field names and required status are **not confirmed against a v14-specific page**; only fields it documents are enforced. It does not document a pack `path`.
+
+Not covered: that Foundry actually loads the system, release fields (`manifest`, `download`, `url`), and `tsconfig` scope (unchanged; the script is typechecked only through the test that imports it).
+
+Verification, 2026-11-20: `npm run check` **passed** (48 tests). With `styles/mon1e.css` moved away, `npm run check` exits 1 and `node scripts/check-manifest.mjs` prints `styles: file not found: styles/mon1e.css`. With `package.json` version set to 0.0.2, `check:manifest` exits 1 with a version mismatch message. Both changes were reverted.
 
 ## Daily loop
 1. Edit under `src/` (changes are picked up through the symlink, no copy or build).
