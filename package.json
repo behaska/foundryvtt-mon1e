@@ -5,7 +5,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/",
-    "check": "npm run typecheck && npm test"
+    "check:manifest": "node scripts/check-manifest.mjs",
+    "check": "npm run typecheck && npm test && npm run check:manifest"
   },
   "private": true,
   "devDependencies": {
