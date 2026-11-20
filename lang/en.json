@@ -30,7 +30,25 @@
       "brawls": "Brawls",
       "encounters": "Encounters",
       "health": "Health",
-      "composure": "Composure"
+      "composure": "Composure",
+      "diagram": "Diagram",
+      "willpower": "Willpower",
+      "burden": "Burden",
+      "charge": "Charge",
+      "discord": "Discord",
+      "groupFocus": "Group Focus",
+      "focusStatement": "Focus Statement",
+      "groupArchetype": "Group Archetype"
+    },
+    "Flags": {
+      "wayward": "Wayward",
+      "roadFanatic": "Road Fanatic",
+      "driveFanatic": "Drive Fanatic",
+      "aimless": "Aimless",
+      "burdened": "Burdened",
+      "laden": "Laden",
+      "radical": "Radical",
+      "shaken": "Shaken"
     },
     "Tracks": {
       "unconscious": "Unconscious",

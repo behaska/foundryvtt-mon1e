@@ -139,3 +139,15 @@ Steps:
 4. Toggle each of the 6 state checkboxes independently; close and reopen the sheet; intact.
 5. Reload (F5), then close and reopen the world; filled counts and states intact.
 6. Labels localized, no raw `MON1E.*` keys, console clean, other sections unaffected. Unchecked state checkboxes persist as false.
+
+## Verification record: centre diagram (issue #17)
+Automated, 2026-11-20: `npm run check` **passed** (27 tests). Covers the number and flag key lists in printed order, no duplicate keys and the i18n labels. Does not cover the model, sheet or template.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): diagram numbers, texts and 8 flags shown and localized, values persist after reload, console clean. Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): Willpower, Burden, Charge, Discord, Group Focus show 0, Focus Statement and Group Archetype are blank, the 8 flags are off (schema `initial`; no migration).
+2. Create a new actor: same.
+3. Edit each number, both texts (Focus Statement is multiline), toggle each of the 8 flags independently; close and reopen the sheet; intact.
+4. Reload (F5), then close and reopen the world; intact. Unchecked flags persist as false.
+5. Labels localized, no raw `MON1E.*` keys, console clean, Health, Composure and stats unaffected.

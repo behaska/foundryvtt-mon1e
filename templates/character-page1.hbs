@@ -119,4 +119,23 @@
       {{/each}}
     </div>
   </fieldset>
+
+  <fieldset class="diagram">
+    <legend>{{localize "MON1E.Character.diagram"}}</legend>
+    <div class="diagram-numbers">
+      {{#each diagramNumbers}}
+      <label class="field"><span>{{label}}</span>
+        <input type="number" step="1" name="system.{{key}}" value="{{value}}"></label>
+      {{/each}}
+    </div>
+    <div class="diagram-flags">
+      {{#each diagramFlags}}
+      <label class="state"><input type="checkbox" name="system.diagramFlags.{{key}}" {{#if checked}}checked{{/if}}> <span>{{label}}</span></label>
+      {{/each}}
+    </div>
+    <label class="field"><span>{{localize "MON1E.Character.focusStatement"}}</span>
+      <textarea name="system.focusStatement" rows="3">{{source.system.focusStatement}}</textarea></label>
+    <label class="field"><span>{{localize "MON1E.Character.groupArchetype"}}</span>
+      <input type="text" name="system.groupArchetype" value="{{source.system.groupArchetype}}"></label>
+  </fieldset>
 </section>

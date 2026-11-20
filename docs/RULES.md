@@ -117,6 +117,9 @@ All A items are answered. Nothing is open before the data model, except that the
 #### Stored for Health and Composure (issue #16, not a rule)
 Per gauge: the count of checked boxes (whole number, default 0) and three independent state flags (default off). The total number of boxes is **not stored and not known**: the sheet draws a placeholder minimum of 6 boxes (presentation only) and adds boxes as (+) goes beyond it. Box counts printed on the sheet remain **unconfirmed by the Mon creator** and must be asked. Floor at 0 in the (+)/(-) buttons is a UI guard, not a Mon rule.
 
+#### Stored for the centre diagram (issue #17, not a rule)
+Whole numbers (default 0): Willpower, Burden, Charge, Discord, Group Focus. Free text (default blank): Focus Statement, Group Archetype. Eight independent on/off flags (default off): Wayward, Road Fanatic, Drive Fanatic, Aimless, Burdened, Laden, Radical, Shaken. Raw values only: no bound, no computation, no effect. Still **unconfirmed by the Mon creator**. **Open gap**: the Burden and Charge edge box gauges (A6) are not stored yet and no open issue covers them.
+
 ### B. Deferred: answer when the matching mechanic is implemented
 - Value ranges (minimum, maximum, negatives allowed or not) and clamping for every numeric line. #10 allows raw values with no bounds.
 - Derived values: whether any of Might, Willpower, Burden, Charge, Discord, Group Focus, Health or Composure is computed.

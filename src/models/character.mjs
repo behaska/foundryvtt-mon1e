@@ -1,5 +1,6 @@
 import { APTITUDE_KEYS, ATTRIBUTE_KEYS, BRAWL_KEYS, ENCOUNTER_KEYS, SKILL_KEYS, defaultStatRows } from "../rules/base-stats.mjs";
 import { defaultClassLevelRows } from "../rules/identity.mjs";
+import { DIAGRAM_FLAG_KEYS, DIAGRAM_NUMBER_KEYS } from "../rules/diagram.mjs";
 import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS } from "../rules/tracks.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
@@ -35,7 +36,7 @@ const trackField = (stateKeys) =>
   });
 
 /**
- * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes, skills, brawls, encounters, health and composure, raw values.
+ * Data model of a `character` Actor. Page 1 identity fields, base attributes, aptitudes, skills, brawls, encounters, health, composure and centre diagram, raw values.
  * The character name is the Actor `name`, not stored here.
  */
 export class CharacterData extends foundry.abstract.TypeDataModel {
@@ -66,7 +67,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       brawls: integerGroupField(BRAWL_KEYS),
       encounters: integerGroupField(ENCOUNTER_KEYS),
       health: trackField(HEALTH_STATE_KEYS),
-      composure: trackField(COMPOSURE_STATE_KEYS)
+      composure: trackField(COMPOSURE_STATE_KEYS),
+      ...Object.fromEntries(DIAGRAM_NUMBER_KEYS.map((key) => [key, integerField()])),
+      focusStatement: textField(),
+      groupArchetype: textField(),
+      diagramFlags: new SchemaField(Object.fromEntries(DIAGRAM_FLAG_KEYS.map((key) => [key, flagField()])))
     };
   }
 }

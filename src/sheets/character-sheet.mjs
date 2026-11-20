@@ -1,4 +1,5 @@
 import { TEMPLATE_ROOT } from "../constants.mjs";
+import { DIAGRAM_FLAG_KEYS, DIAGRAM_NUMBER_KEYS } from "../rules/diagram.mjs";
 import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS, adjustFilled, boxesToDraw } from "../rules/tracks.mjs";
 
 const TRACKS = ["health", "composure"];
@@ -77,6 +78,16 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     };
     context.healthTrack = track("health", HEALTH_STATE_KEYS);
     context.composureTrack = track("composure", COMPOSURE_STATE_KEYS);
+    context.diagramNumbers = DIAGRAM_NUMBER_KEYS.map((key) => ({
+      key,
+      label: game.i18n.localize(`MON1E.Character.${key}`),
+      value: this.document.system[key]
+    }));
+    context.diagramFlags = DIAGRAM_FLAG_KEYS.map((key) => ({
+      key,
+      label: game.i18n.localize(`MON1E.Flags.${key}`),
+      checked: this.document.system.diagramFlags[key]
+    }));
     return context;
   }
 }

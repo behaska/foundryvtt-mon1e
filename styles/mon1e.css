@@ -38,3 +38,9 @@
 .mon1e.character-sheet .track-boxes button { flex: 0 0 auto; width: 2rem; }
 .mon1e.character-sheet .track-states { display: flex; gap: 1rem; margin-top: 0.5rem; }
 .mon1e.character-sheet .track-states .state { display: flex; align-items: center; gap: 0.25rem; }
+
+/* Centre diagram */
+.mon1e.character-sheet .diagram { margin: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.mon1e.character-sheet .diagram-numbers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+.mon1e.character-sheet .diagram-flags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem 1rem; }
+.mon1e.character-sheet .diagram-flags .state { display: flex; align-items: center; gap: 0.25rem; }
