@@ -138,4 +138,30 @@
     <label class="field"><span>{{localize "MON1E.Character.groupArchetype"}}</span>
       <input type="text" name="system.groupArchetype" value="{{source.system.groupArchetype}}"></label>
   </fieldset>
+
+  {{#each scarTracks}}
+  <fieldset class="track scars {{name}}">
+    <legend>{{label}}</legend>
+    <div class="track-boxes">
+      <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="-1"
+        title="{{localize "MON1E.Tracks.decrease"}}" aria-label="{{localize "MON1E.Tracks.decrease"}}">&minus;</button>
+      {{#each boxes}}
+      <input type="checkbox" class="track-box" disabled {{#if checked}}checked{{/if}}>
+      {{/each}}
+      <button type="button" data-action="adjustTrack" data-track="{{name}}" data-delta="1"
+        title="{{localize "MON1E.Tracks.increase"}}" aria-label="{{localize "MON1E.Tracks.increase"}}">+</button>
+    </div>
+  </fieldset>
+  {{/each}}
+
+  {{#each disorders}}
+  <fieldset class="disorders {{key}}">
+    <legend>{{label}}</legend>
+    {{#each lines}}
+    <input type="text" name="system.{{../key}}.{{index}}" value="{{value}}" aria-label="{{localize "MON1E.Disorders.line"}} {{number}}">
+    {{/each}}
+    <button type="button" data-action="addDisorder" data-list="{{key}}"
+      title="{{localize "MON1E.Disorders.add"}}" aria-label="{{localize "MON1E.Disorders.add"}}">+</button>
+  </fieldset>
+  {{/each}}
 </section>

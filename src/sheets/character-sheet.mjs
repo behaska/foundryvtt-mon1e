@@ -1,8 +1,9 @@
 import { TEMPLATE_ROOT } from "../constants.mjs";
 import { DIAGRAM_FLAG_KEYS, DIAGRAM_NUMBER_KEYS } from "../rules/diagram.mjs";
+import { DISORDER_KEYS, SCAR_KEYS } from "../rules/scars.mjs";
 import { COMPOSURE_STATE_KEYS, HEALTH_STATE_KEYS, adjustFilled, boxesToDraw } from "../rules/tracks.mjs";
 
-const TRACKS = ["health", "composure"];
+const TRACKS = ["health", "composure", ...SCAR_KEYS];
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -16,7 +17,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     position: { width: 720, height: 640 },
     window: { resizable: true },
     form: { submitOnChange: true, closeOnSubmit: false },
-    actions: { adjustTrack: CharacterSheet.#onAdjustTrack }
+    actions: { adjustTrack: CharacterSheet.#onAdjustTrack, addDisorder: CharacterSheet.#onAddDisorder }
   };
 
   /**
@@ -30,6 +31,18 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!TRACKS.includes(track)) return;
     const next = adjustFilled(this.document.system[track].filled, Number(delta));
     await this.document.update({ [`system.${track}.filled`]: next });
+  }
+
+  /**
+   * (+) on a disorder list: appends one blank line. Reads `data-list`.
+   * @this {CharacterSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   */
+  static async #onAddDisorder(event, target) {
+    const { list } = target.dataset;
+    if (!DISORDER_KEYS.includes(list)) return;
+    await this.document.update({ [`system.${list}`]: [...this.document.system[list], ""] });
   }
 
   /**
@@ -87,6 +100,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       key,
       label: game.i18n.localize(`MON1E.Flags.${key}`),
       checked: this.document.system.diagramFlags[key]
+    }));
+    context.scarTracks = SCAR_KEYS.map((key) => ({
+      ...track(key, []),
+      label: game.i18n.localize(`MON1E.Tracks.${key}`)
+    }));
+    context.disorders = DISORDER_KEYS.map((key) => ({
+      key,
+      label: game.i18n.localize(`MON1E.Disorders.${key}`),
+      lines: this.document.system[key].map((value, index) => ({ index, number: index + 1, value }))
     }));
     return context;
   }

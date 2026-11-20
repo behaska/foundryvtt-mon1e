@@ -151,3 +151,15 @@ Steps:
 3. Edit each number, both texts (Focus Statement is multiline), toggle each of the 8 flags independently; close and reopen the sheet; intact.
 4. Reload (F5), then close and reopen the world; intact. Unchecked flags persist as false.
 5. Labels localized, no raw `MON1E.*` keys, console clean, Health, Composure and stats unaffected.
+
+## Verification record: scars and disorders (issue #18)
+Automated, 2026-11-20: `npm run check` **passed** (31 tests). Covers scar and disorder key order, `defaultDisorderLines` and the i18n labels. Does not cover the model, sheet, template or the (+)/(-) and add-line buttons.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, reported as all passed): scar gauges and disorder lines shown and localized, values persist after reload, console clean. Foundry build not recorded.
+
+Steps:
+1. Open an existing actor (created before this change): the 3 scar gauges show placeholder boxes unchecked, each disorder list shows 3 blank lines (schema `initial`; no migration).
+2. Create a new actor: same.
+3. (+)/(-) on each scar gauge (past the drawn boxes adds one, stops at 0); type in each disorder line; press (+) to add a fourth line and fill it; close and reopen the sheet; intact.
+4. Reload (F5), then close and reopen the world; intact.
+5. Labels localized, no raw `MON1E.*` keys, console clean, Health, Composure and diagram unaffected.

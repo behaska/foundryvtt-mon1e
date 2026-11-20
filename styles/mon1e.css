@@ -44,3 +44,5 @@
 .mon1e.character-sheet .diagram-numbers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
 .mon1e.character-sheet .diagram-flags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem 1rem; }
 .mon1e.character-sheet .diagram-flags .state { display: flex; align-items: center; gap: 0.25rem; }
+.mon1e.character-sheet .disorders { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem; }
+.mon1e.character-sheet .disorders button { align-self: flex-start; width: 2rem; }

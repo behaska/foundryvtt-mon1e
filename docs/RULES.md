@@ -120,6 +120,9 @@ Per gauge: the count of checked boxes (whole number, default 0) and three indepe
 #### Stored for the centre diagram (issue #17, not a rule)
 Whole numbers (default 0): Willpower, Burden, Charge, Discord, Group Focus. Free text (default blank): Focus Statement, Group Archetype. Eight independent on/off flags (default off): Wayward, Road Fanatic, Drive Fanatic, Aimless, Burdened, Laden, Radical, Shaken. Raw values only: no bound, no computation, no effect. Still **unconfirmed by the Mon creator**. **Open gap**: the Burden and Charge edge box gauges (A6) are not stored yet and no open issue covers them.
 
+#### Stored for scars and disorders (issue #18, not a rule)
+Road, Drive and Group Scars: each a count of checked boxes (whole number, default 0), same placeholder display as Health and Composure. Road, Drive and Group Disorders: each a list of free-text lines, 3 blank lines by default, more can be added. Raw values only: no bound, no effect, no link between Scars and Disorders. Still **unconfirmed by the Mon creator**, including the scar box count (the issue mentions 3 per the PDF) and whether three disorder lines is a limit.
+
 ### B. Deferred: answer when the matching mechanic is implemented
 - Value ranges (minimum, maximum, negatives allowed or not) and clamping for every numeric line. #10 allows raw values with no bounds.
 - Derived values: whether any of Might, Willpower, Burden, Charge, Discord, Group Focus, Health or Composure is computed.

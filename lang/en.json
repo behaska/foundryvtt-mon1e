@@ -58,7 +58,17 @@
       "discomfited": "Discomfited",
       "humiliated": "Humiliated",
       "increase": "Add a box",
-      "decrease": "Remove a box"
+      "decrease": "Remove a box",
+      "roadScars": "Road Scars",
+      "driveScars": "Drive Scars",
+      "groupScars": "Group Scars"
+    },
+    "Disorders": {
+      "roadDisorders": "Road Disorders",
+      "driveDisorders": "Drive Disorders",
+      "groupDisorders": "Group Disorders",
+      "add": "Add a line",
+      "line": "Disorder"
     },
     "Brawls": {
       "armour": "Armour",
