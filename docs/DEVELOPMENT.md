@@ -22,6 +22,8 @@ ln -s /path/to/foundryvtt-mon1e mon1e
 | `npm run check:manifest` | `scripts/check-manifest.mjs`: validate `system.json` and that referenced files exist |
 | `npm run lint` | `eslint .` (config: `eslint.config.mjs`) |
 | `npm run check` | typecheck, then tests, then manifest check, then lint |
+| `npm run package` | `scripts/package.mjs`: build `dist/mon1e.zip`, `dist/system.json` (release manifest) and `dist/SHA256SUMS` |
+| `npm run verify:package` | `scripts/verify-package.mjs`: inspect the produced ZIP (not part of `check`) |
 
 Single test file: `node --test tests/<file>.test.mjs`.
 
@@ -33,6 +35,15 @@ Source: the Foundry system development article (https://foundryvtt.com/article/s
 Not covered: that Foundry actually loads the system, release fields (`manifest`, `download`, `url`), and `tsconfig` scope (unchanged; the script is typechecked only through the test that imports it).
 
 Verification, 2026-11-20: `npm run check` **passed** (48 tests). With `styles/mon1e.css` moved away, `npm run check` exits 1 and `node scripts/check-manifest.mjs` prints `styles: file not found: styles/mon1e.css`. With `package.json` version set to 0.0.2, `check:manifest` exits 1 with a version mismatch message. Both changes were reverted.
+
+### Packaging (issue #26)
+`npm run package` validates the manifest, then zips an explicit file list: everything under `src/`, `templates/`, `styles/`, `lang/` (dotfiles excluded) plus every path `system.json` references, with the release `system.json` at the ZIP root. Sources are only read. The release manifest is the source manifest plus `url`, `manifest`, `download` and `bugs`; those GitHub URLs are **targets, not verified to exist** until a release is published. Tooling: system `zip`/`unzip` (macOS, `ubuntu-latest`), no npm dependency; Windows is not supported. `dist/` is git-ignored and eslint-ignored.
+
+`npm run verify:package` inspects the real ZIP: `system.json` at the root and equal to `dist/system.json`, manifest validation (reusing `check-manifest`: required files present, version equals `package.json`), no entry outside the shipped directories or any hidden file (so no `node_modules`, `tests`, `scripts`, `docs`, `package.json`), every relative `import` of a shipped `.mjs` present, and `SHA256SUMS` matching the recomputed hashes. CI runs both after `npm run check` and uploads `dist/` as the `mon1e-package` artifact: the same output a release would publish.
+
+Limits: dynamic or computed imports and runtime-built template paths are not detected (templates are covered by the directory allowlist); ZIP bytes embed file mtimes, so the checksum identifies one build, not a reproducible one; a new top-level source directory must be added to `PACKAGE_DIRS` in `scripts/package.mjs`. Install and load in Foundry v14 is **not** tested here. Contract source: the Foundry system development article (not confirmed v14-specific); ZIP root layout follows the documented install behaviour of extracting into `systems/<id>/`.
+
+Verification, 2026-11-20: `npm run check` **passed** (61 tests). `npm run package && npm run verify:package` exit 0 on macOS (17 entries, `system.json` at root, `shasum -a 256 -c dist/SHA256SUMS` OK, `system.json`/`package.json` hashes unchanged). Negative runs exit 1: `src/main.mjs` removed from the ZIP (`esmodules: file not found: src/main.mjs`), a `tests/` entry added (`unexpected entry`), `SHA256SUMS` tampered (`mismatch`). CI artifact: not yet verified, pending the PR run.
 
 ### Lint and Dependabot (issue #25)
 `eslint.config.mjs` (flat config; `.mjs` instead of the `.js` named in the framing brief, to match the repo's ES module convention) lints `src/`, `scripts/` and `tests/` with `@eslint/js` `recommended` only, plus `no-unused-vars` ignoring `_`-prefixed args. These are rules that catch certain errors, and they block. Style rules (quotes, semicolons, indent, `prefer-const`, `no-var`) are not enabled and never block. Foundry globals used by `src/` (`game`, `foundry`, `Hooks`, `CONFIG`, `Actor`) are declared by hand in the config. Not linted: `templates/`, `lang/`, `styles/`, `documentation/`, tooling folders.
