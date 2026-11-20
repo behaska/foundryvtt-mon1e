@@ -45,6 +45,21 @@ Limits: dynamic or computed imports and runtime-built template paths are not det
 
 Verification, 2026-11-20: `npm run check` **passed** (61 tests). `npm run package && npm run verify:package` exit 0 on macOS (17 entries, `system.json` at root, `shasum -a 256 -c dist/SHA256SUMS` OK, `system.json`/`package.json` hashes unchanged). Negative runs exit 1: `src/main.mjs` removed from the ZIP (`esmodules: file not found: src/main.mjs`), a `tests/` entry added (`unexpected entry`), `SHA256SUMS` tampered (`mismatch`). CI artifact: not yet verified, pending the PR run.
 
+### Release workflow (issue #27)
+`.github/workflows/release.yml` is `workflow_dispatch` only (inputs `mode`, `version`). It has no `pull_request` trigger, so a fork PR can neither run it nor get a write token. Top-level `permissions: {}`; `contents: write` exists only on the `draft` job.
+
+**`mode: draft`** (only from `main`):
+1. `verify` (`contents: read`, `checks: read`): the dispatched SHA must be the current head of `main`, the `quality` check from `ci.yml` must be green on it, and `scripts/check-release.mjs` must accept the version (semver without `v`, equal to `package.json` and `system.json`, no existing tag or release). It then runs `npm run check`, `package`, `verify:package` and uploads `dist/` as `mon1e-release-candidate`.
+2. `draft` (`contents: write`, GitHub environment `release`): downloads that exact artifact (no rebuild), rechecks that `main` has not moved and that the tag and release (drafts included, visible only with write access) do not exist, checks `SHA256SUMS`, creates the tag `v<version>` on the verified SHA, then `gh release create --draft --verify-tag` with `mon1e.zip`, `system.json`, `SHA256SUMS`.
+
+Then a human qualifies the attached ZIP in Foundry v14 (issue #28 protocol, not part of this workflow) and publishes the draft by hand.
+
+**`mode: verify-published`**: downloads the stable `releases/latest/download/system.json` and the versioned `mon1e.zip`, `system.json`, `SHA256SUMS`; checks the manifest version and `download` URL, `sha256sum -c`, and that the manifest inside the ZIP equals the published one. It fails if the version is not the latest release.
+
+Limits: `npm run check:release -- --version <v>` and its unit tests cover only the version, tag and release rules. The YAML is not covered by any automated test. A green workflow proves a consistent, checksummed package from a green `main` commit. It does **not** prove the system loads in Foundry or conforms to Mon rules. Releases are not immutable yet: enabling GitHub release immutability is a repository setting to turn on **after** one validated draft-to-publish cycle, since it makes a bad release permanent.
+
+Verification, 2026-11-20: `npm run check` **passed** (71 tests). `check-release` CLI exits 0 for `0.0.1` with no tags, and exits 1 for a version mismatch and for an existing tag. The YAML parses (Ruby `YAML.load_file`), `actionlint` is not installed. **Not yet verified on GitHub**: the `main` guard, the `quality` check lookup, tag and draft creation, refusal of a rerun, and the public URL check. Action pins: `download-artifact` v8.0.2 (`9000827c…`), the others reused from `ci.yml`. No release or tag has been created.
+
 ### Lint and Dependabot (issue #25)
 `eslint.config.mjs` (flat config; `.mjs` instead of the `.js` named in the framing brief, to match the repo's ES module convention) lints `src/`, `scripts/` and `tests/` with `@eslint/js` `recommended` only, plus `no-unused-vars` ignoring `_`-prefixed args. These are rules that catch certain errors, and they block. Style rules (quotes, semicolons, indent, `prefer-const`, `no-var`) are not enabled and never block. Foundry globals used by `src/` (`game`, `foundry`, `Hooks`, `CONFIG`, `Actor`) are declared by hand in the config. Not linted: `templates/`, `lang/`, `styles/`, `documentation/`, tooling folders.
 
