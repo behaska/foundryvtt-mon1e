@@ -9,5 +9,5 @@
     "target": "ES2022",
     "types": ["node"]
   },
-  "include": ["src/constants.mjs", "tests/**/*.mjs"]
+  "include": ["src/constants.mjs", "src/rules/**/*.mjs", "tests/**/*.mjs"]
 }

@@ -1,0 +1,39 @@
+<section class="tab {{tabs.page1.cssClass}}" data-tab="page1" data-group="primary">
+  <div class="identity-grid">
+    <label class="field"><span>{{localize "MON1E.Character.species"}}</span>
+      <input type="text" name="system.species" value="{{source.system.species}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.ancestry"}}</span>
+      <input type="text" name="system.ancestry" value="{{source.system.ancestry}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.moonSignature"}}</span>
+      <input type="text" name="system.moonSignature" value="{{source.system.moonSignature}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.kaon"}}</span>
+      <input type="number" step="1" name="system.kaon" value="{{source.system.kaon}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.zaon"}}</span>
+      <input type="number" step="1" name="system.zaon" value="{{source.system.zaon}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.zaonScars"}}</span>
+      <input type="number" step="1" name="system.zaonScars" value="{{source.system.zaonScars}}"></label>
+    <label class="field"><span>{{localize "MON1E.Character.might"}}</span>
+      <input type="number" step="1" name="system.might" value="{{source.system.might}}"></label>
+    <label class="field wide"><span>{{localize "MON1E.Character.archetype"}}</span>
+      <input type="text" name="system.archetype" value="{{source.system.archetype}}"></label>
+  </div>
+
+  <table class="class-levels">
+    <thead>
+      <tr>
+        <th>{{localize "MON1E.Character.class"}}</th>
+        <th>{{localize "MON1E.Character.subClass"}}</th>
+        <th>{{localize "MON1E.Character.level"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each source.system.classLevels}}
+      <tr>
+        <td><input type="text" name="system.classLevels.{{@index}}.class" value="{{this.class}}"></td>
+        <td><input type="text" name="system.classLevels.{{@index}}.subClass" value="{{this.subClass}}"></td>
+        <td><input type="number" step="1" name="system.classLevels.{{@index}}.level" value="{{this.level}}"></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

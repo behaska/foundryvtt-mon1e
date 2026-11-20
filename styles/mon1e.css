@@ -1,0 +1,10 @@
+.mon1e.character-sheet .sheet-header { padding: 0.5rem; }
+.mon1e.character-sheet .identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+.mon1e.character-sheet .field { display: flex; flex-direction: column; gap: 0.15rem; }
+.mon1e.character-sheet .field.wide { grid-column: 1 / -1; }
+.mon1e.character-sheet .class-levels { width: 100%; padding: 0.5rem; }

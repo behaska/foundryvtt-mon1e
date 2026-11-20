@@ -1,0 +1,29 @@
+{
+  "TYPES": {
+    "Actor": {
+      "character": "Character"
+    }
+  },
+  "MON1E": {
+    "Sheet": {
+      "Character": "Mon1e Character Sheet",
+      "Tabs": {
+        "page1": "Page 1"
+      }
+    },
+    "Character": {
+      "name": "Name",
+      "species": "Species",
+      "ancestry": "Ancestry",
+      "moonSignature": "Moon Signature",
+      "kaon": "Kaon",
+      "zaon": "Zaon",
+      "zaonScars": "Zaon Scars",
+      "archetype": "Archetype",
+      "might": "Might",
+      "class": "Class",
+      "subClass": "Sub-Class",
+      "level": "Level"
+    }
+  }
+}

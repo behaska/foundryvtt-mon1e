@@ -10,5 +10,20 @@
   },
   "esmodules": [
     "src/main.mjs"
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    }
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "styles": [
+    "styles/mon1e.css"
   ]
 }

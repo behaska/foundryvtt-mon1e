@@ -9,3 +9,9 @@ export const SYSTEM_ID = "mon1e";
 export function diagnosticMessage(version = "unknown") {
   return `${SYSTEM_ID} | system loaded (v${version})`;
 }
+
+/** Actor type id for a player character (must match `documentTypes.Actor` in system.json). */
+export const CHARACTER_TYPE = "character";
+
+/** Template path prefix, relative to the Foundry data root. */
+export const TEMPLATE_ROOT = `systems/${SYSTEM_ID}/templates`;

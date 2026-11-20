@@ -30,9 +30,9 @@ Single test file: `node --test tests/<file>.test.mjs`.
 4. Commit once behavior is verified in Foundry.
 
 ## `checkJs` coverage
-Current scope (`tsconfig.json`): `src/constants.mjs` and `tests/`. `src/main.mjs` is **excluded**: it uses the Foundry global API (`Hooks`), and no type declarations are installed for it. Foundry APIs are verified inside Foundry itself.
+Current scope (`tsconfig.json`): `src/constants.mjs`, `src/rules/` and `tests/`. `src/main.mjs`, `src/foundry/`, `src/models/` and `src/sheets/` are **excluded**: they use the Foundry global API (`Hooks`, `CONFIG`, `foundry.*`), and no type declarations are installed for it. Foundry APIs are verified inside Foundry itself.
 
-Not covered by `checkJs` (needs an in-Foundry check): `src/main.mjs` and every Foundry global or API (`Hooks`, `game`, `CONFIG`, documents, data models, sheets). `node:test` tests only exercise pure code and the manifest file; they do not cover Foundry integration. A green `npm run check` says nothing about runtime behavior in Foundry.
+Not covered by `checkJs` (needs an in-Foundry check): `src/main.mjs`, the data model, sheet and registration, and every Foundry global or API (`Hooks`, `game`, `CONFIG`, documents, data models, sheets). `node:test` tests only exercise pure code and the manifest file; they do not cover Foundry integration. A green `npm run check` says nothing about runtime behavior in Foundry.
 
 ### Verification record: quality commands (issue #4)
 Date: 2026-11-19. Clean `npm ci`, Node.js v26.11.1, TypeScript 7.0.2.
@@ -54,3 +54,24 @@ Date: 2026-11-19. Manual run by the maintainer, console output pasted.
 - Blocking console error: **none**. One non-blocking warning: `WebGL context was lost` (Foundry/GPU, unrelated to the system).
 - Foundry build tested: **14.369**, not 14.370 as targeted. Re-run after updating.
 - Coverage: manual runtime check only; `checkJs` does not cover `src/main.mjs`.
+
+## Verification record: character actor and tabbed sheet, page 1 identity (issue #12)
+Automated, 2026-11-20: `npm run check` **passed** (9 tests: row defaults, manifest `documentTypes` and `languages`, every `localize` key used by templates exists in `lang/en.json`). This does not cover the model, sheet or registration.
+
+v14 API names checked against the official v14 API docs (14.370 pages): `foundry.abstract.TypeDataModel` (static `defineSchema`, `LOCALIZATION_PREFIXES`), `foundry.applications.sheets.ActorSheetV2` (static `TABS`, `tabGroups`, `_prepareTabs`), `ApplicationTabsConfiguration` (`tabs`, `initial`, `labelPrefix`), `DocumentSheetV2` `form.{submitOnChange, closeOnSubmit, handler}`, `DocumentSheetConfig.registerSheet(documentClass, scope, sheetClass, options)`.
+**Not confirmed from the docs** (check at runtime): the `SheetRegistrationOptions` properties (`types`, `makeDefault`, `label`), the `foundry.applications.api.HandlebarsApplicationMixin` page (404), `PARTS` shape, tab label localization from `labelPrefix`, and how array rows named `system.classLevels.N.field` are submitted.
+
+In-Foundry check in world `mon1e-test` (2026-11-20, manual run by the maintainer, screenshots):
+- Actor of type Character created; sheet opens on the "Page 1" tab: **passed** (after a fix: the tab label first showed the raw key `MON1E.Sheet.Tabs.page1`; now an explicit `label` passed through `localize`).
+- Fields edited (species, ancestry, moon signature, kaon, zaon, zaon scars, might, archetype, first class/sub-class/level row) and **persistence reported OK** by the maintainer: **passed**.
+- Console: no error, no deprecation warning: **passed** (reported by the maintainer).
+- Persistence after closing and reopening the world: **passed** (reported by the maintainer).
+- Rows 2 and 3 of Class / Sub-Class / Level edit and persist: **passed**.
+- Foundry build not recorded.
+
+Steps run:
+1. Create an Actor of type Character; the sheet opens on the "Page 1" tab.
+2. Edit every field (name, species, ancestry, moon signature, kaon, zaon, zaon scars, might, archetype, the 3 class/sub-class/level rows); close and reopen the sheet; values intact.
+3. Reload (F5), then close and reopen the world; values intact.
+4. Console: no error or deprecation warning; no raw `MON1E.*` keys visible.
+Record date, Foundry build and results here.
