@@ -189,3 +189,44 @@ Steps:
 5. Narrow the window: nothing overlaps or becomes unreachable. Check light and dark themes.
 
 Known gaps against the paper: Burden and Charge edge box tracks are not drawn (not stored); the MON logo is not used (rights unconfirmed); the layout is an approximation by eye, not pixel-exact.
+
+## Baseline audit (issue #22)
+Date: 2026-11-20. Read-only audit before any CI work (#21). No functional change.
+
+Severity: **blocking** = prevents CI/CD or leaks data; **important** = fix before CI or release; **optional** = hygiene.
+
+### Reproducible baseline
+- Node.js v26.11.1, npm 11.20.0, TypeScript 7.0.2 (`npx tsc -v`).
+- `npm ci`: 4 packages added, 0 vulnerabilities.
+- `npm run check`: **passed** (exit 0; typecheck clean, 36 tests, 0 fail).
+- Not covered: Foundry runtime. Foundry build last tested: 14.369.
+
+### Inventory
+- `.github/`: absent. No workflow, no CI.
+- `system.json`: id `mon1e`, version 0.0.1, compatibility 14/14, `esmodules`, `styles` and `languages` paths all exist on disk. No `url`, `manifest` or `download` field.
+- GitHub (`gh`, read-only): public, default branch `main`, no licence detected, 0 tags, 0 releases, `main` not protected, Actions enabled with all actions allowed (no SHA pinning required), secret scanning, push protection and Dependabot security updates all disabled.
+- History: 38 commits scanned with `gitleaks git`, no leaks found. Scope: committed history only, not the working tree or GitHub settings.
+- Tracked noise: `.idea/` (5 files: `.gitignore`, `.iml`, `material_theme_project_new.xml`, `modules.xml`, `vcs.xml`) and `.llm-workbench/project.json` (absolute local path `/Users/.../.llm-workbench`).
+- `documentation/cadrage/cicd/implementation-cicd.md` is staged but not committed.
+
+### Findings
+| # | Finding | Severity | Follow-up |
+|---|---|---|---|
+| F1 | No licence for the code; none decided for Mon / Fringe Worlds content. A public repo is not open source by default. | important | Maintainer decision (open question below). |
+| F2 | `main` has no branch protection. | important | Enable before relying on CI as a gate. |
+| F3 | `system.json` has no `url`, `manifest` or `download`, so no installable release is possible. | important | Needed by the release issue, not by CI. |
+| F4 | Secret scanning, push protection and Dependabot are disabled on a public repo. | important | Maintainer enables in repo settings. |
+| F5 | Generated guidance said the repo has no `system.json` and no working commands. | important | **Fixed** here, see below. |
+| F6 | `.idea/` tracked; the `.gitignore` template does not cover `modules.xml`, `.iml` or the theme file. | optional | Untrack in a follow-up. |
+| F7 | `.llm-workbench/project.json` holds a machine-specific absolute path. | optional | Decide whether to keep it versioned. |
+| F8 | Actions allow every action, no SHA pinning. | optional | Restrict when the first workflow lands. |
+| F9 | Foundry 14.370 targeted, 14.369 tested. | optional | Re-run the manual check after updating. |
+| F10 | `package.json` has no `engines` field; the Node version is only recorded here. | optional | Decide when CI picks a Node version. |
+
+No blocking finding.
+
+### Stale guidance fix (F5)
+Source: `project-guidance.md` in the external workbench (`~/.llm-workbench/projects/mon1e/context/`), edited and committed there, then `llm sync` regenerated `CLAUDE.md` and `AGENTS.md`. The source is not versioned in this repo. The "Project state" and "Commands" sections now describe the working system and the three commands. Check: no remaining "No working commands" or "no `system.json`" text in either generated file.
+
+### Open question for the maintainer
+**Licence**: which licence applies to the Mon1e code, and under what terms may Mon and Fringe Worlds content (names, labels, rules, logo, sheet layout) appear in or alongside a public repository? Not answered here; no licence file added. Needs the Mon creator's position before any release.
