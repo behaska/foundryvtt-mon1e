@@ -41,21 +41,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Mon1e is a Foundry VTT **v14** Game System for the tabletop RPG "Mon" (Fringe Worlds). The repo is currently a scaffold only: `package.json` (no dependencies), a placeholder `index.js`, and the framing brief. There is no `system.json` and no `src/` yet.
-
-Current work: GitHub issue #1, "Milestone 1 - Mon1e Bootstrap (0.0.1)". Foundry recognizes the system, a test world starts, and Git plus basic checks work. No rules engine. It covers P0-P2 of the brief.
+Mon1e is a Foundry VTT **v14** Game System for the tabletop RPG "Mon" (Fringe Worlds). The repo holds a working system: `system.json` manifest (id `mon1e`), `src/main.mjs` entry point, a Character actor with a tabbed sheet, `lang/`, `styles/`, `templates/` and `tests/`. Per-issue verification records and the current Foundry build tested are in `docs/DEVELOPMENT.md`; `docs/RULES.md` states which Mon rules are confirmed (none yet) and which are unknown. Work is tracked in GitHub issues, with plans in `documentation/plans/`.
 
 Source of truth for stack and roadmap (in French): `documentation/cadrage/bootstrap/bootstraping-initial-project.md`. Read it before planning work.
 
 ## Commands
 
-No working commands exist yet. `npm test` is the default placeholder and exits 1. Planned in the brief, not yet created:
+- `npm run typecheck`: `tsc --noEmit` with `allowJs` + `checkJs` (see `docs/DEVELOPMENT.md` for the exact coverage)
+- `npm test`: Node.js `node:test` over `tests/`
+- `npm run check`: typecheck, then tests
 
-- `npm run typecheck`: `tsc --noEmit` with `allowJs` + `checkJs`
-- `npm test`: Node.js `node:test`
-- `npm run check`: runs all technical checks
-
-Once tests exist, run a single file with `node --test tests/<file>.test.mjs`.
+Run a single file with `node --test tests/<file>.test.mjs`. A green `npm run check` says nothing about runtime behavior in Foundry.
 
 ## Target architecture
 
